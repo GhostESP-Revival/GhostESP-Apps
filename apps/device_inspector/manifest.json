@@ -1,7 +1,7 @@
 {
   "id": "device_inspector",
   "name": "Device Inspector",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authors": ["GhostESP"],
   "category": "System",
   "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
