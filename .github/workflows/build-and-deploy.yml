@@ -39,7 +39,6 @@ jobs:
         run: |
           gbt setup
           ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6
-          ~/.ghostbt/esp-idf/python_env/idf6.0_py3.12_env/bin/pip install click
 
       - name: Build and upload apps
         env:
