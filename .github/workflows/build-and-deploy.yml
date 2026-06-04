@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - 'apps/**'
-      - 'assets/**'
 
   workflow_dispatch:
 
@@ -14,26 +13,7 @@ env:
   R2_PUBLIC_URL: https://gesp.fuckyourcdn.com
 
 jobs:
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      apps: ${{ steps.changes.outputs.apps }}
-      assets: ${{ steps.changes.outputs.assets }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - id: changes
-        run: |
-          APPS=$(git diff --name-only HEAD~1 HEAD -- 'apps/**/manifest.json' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          ASSETS=$(git diff --name-only HEAD~1 HEAD -- 'assets/**/manifest.json' | jq -R -s -c 'split("\n") | map(select(length > 0))')
-          echo "apps=$APPS" >> "$GITHUB_OUTPUT"
-          echo "assets=$ASSETS" >> "$GITHUB_OUTPUT"
-
   build-apps:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.apps != '[]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -61,7 +41,6 @@ jobs:
           r2_url = os.environ['R2_PUBLIC_URL']
           r2_endpoint = os.environ['R2_ENDPOINT']
 
-          # Find all app manifests
           for manifest_path in glob.glob('apps/*/manifest.json'):
               with open(manifest_path) as f:
                   manifest = json.load(f)
@@ -72,10 +51,25 @@ jobs:
               app_id = manifest['id']
               version = manifest['version']
               targets = manifest.get('targets', ['esp32s3'])
-              source_dir = os.path.join(os.path.dirname(manifest_path), 'source')
+              source_repo = manifest.get('source_repo', '')
+              commit_sha = manifest.get('commit_sha', 'main')
+              local_source = os.path.join(os.path.dirname(manifest_path), 'source')
 
-              if not os.path.isdir(source_dir):
-                  print(f"Skipping {app_id}: no source directory")
+              if source_repo:
+                  clone_dir = f'sources/{app_id}'
+                  print(f"Cloning {source_repo} at {commit_sha}...")
+                  result = subprocess.run(
+                      ['git', 'clone', '--depth=1', source_repo, clone_dir],
+                      capture_output=True, text=True
+                  )
+                  if result.returncode != 0:
+                      print(f"Clone failed for {app_id}: {result.stderr}")
+                      continue
+                  source_dir = clone_dir
+              elif os.path.isdir(local_source):
+                  source_dir = local_source
+              else:
+                  print(f"Skipping {app_id}: no source found")
                   continue
 
               for target in targets:
@@ -88,13 +82,11 @@ jobs:
                       print(f"Build failed for {app_id}/{target}: {result.stderr}")
                       continue
 
-                  # Find the .gapp file
                   gapp_files = glob.glob(f'build/{app_id}/**/*.gapp', recursive=True)
                   for gapp in gapp_files:
                       filename = os.path.basename(gapp)
                       r2_key = f"apps/{app_id}/v{version}/{filename}"
 
-                      # Upload to R2
                       subprocess.run([
                           'aws', 's3', 'cp', gapp, f"s3://{r2_bucket}/{r2_key}",
                           '--endpoint-url', r2_endpoint,
@@ -104,78 +96,9 @@ jobs:
                       print(f"Uploaded: {r2_url}/{r2_key}")
         shell: python
 
-  build-assets:
-    needs: detect-changes
-    if: needs.detect-changes.outputs.assets != '[]'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install ghostbt
-        run: pip install ghostbt
-
-      - name: Build and upload assets
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-        run: |
-          import json
-          import subprocess
-          import os
-          import glob
-
-          r2_bucket = os.environ['R2_BUCKET']
-          r2_url = os.environ['R2_PUBLIC_URL']
-          r2_endpoint = os.environ['R2_ENDPOINT']
-
-          # Find all asset manifests
-          for manifest_path in glob.glob('assets/*/manifest.json'):
-              with open(manifest_path) as f:
-                  manifest = json.load(f)
-
-              if manifest.get('type') != 'asset':
-                  continue
-
-              asset_id = manifest['id']
-              source_dir = os.path.join(os.path.dirname(manifest_path), 'source')
-
-              if not os.path.isdir(source_dir):
-                  print(f"Skipping {asset_id}: no source directory")
-                  continue
-
-              print(f"Building asset pack: {asset_id}...")
-              result = subprocess.run(
-                  ['gbt', 'asset', 'pack', '--archive', '--out', f'build/assets/{asset_id}', source_dir],
-                  capture_output=True, text=True
-              )
-              if result.returncode != 0:
-                  print(f"Build failed for {asset_id}: {result.stderr}")
-                  continue
-
-              # Find the .gtheme file
-              gtheme_files = glob.glob(f'build/assets/{asset_id}/**/*.gtheme', recursive=True)
-              for gtheme in gtheme_files:
-                  filename = os.path.basename(gtheme)
-                  r2_key = f"assets/{asset_id}/{filename}"
-
-                  subprocess.run([
-                      'aws', 's3', 'cp', gtheme, f"s3://{r2_bucket}/{r2_key}",
-                      '--endpoint-url', r2_endpoint,
-                      '--content-type', 'application/octet-stream'
-                  ], check=True)
-
-                  print(f"Uploaded: {r2_url}/{r2_key}")
-        shell: python
-
   regenerate-catalog:
-    needs: [build-apps, build-assets]
-    if: always() && (needs.build-apps.result == 'success' || needs.build-assets.result == 'success')
+    needs: build-apps
+    if: needs.build-apps.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -193,11 +116,9 @@ jobs:
 
           catalog = {
               'generated_at': datetime.now(timezone.utc).isoformat(),
-              'apps': [],
-              'assets': []
+              'apps': []
           }
 
-          # Process apps
           for manifest_path in sorted(glob.glob('apps/*/manifest.json')):
               with open(manifest_path) as f:
                   manifest = json.load(f)
@@ -229,36 +150,10 @@ jobs:
               }
               catalog['apps'].append(entry)
 
-          # Process assets
-          for manifest_path in sorted(glob.glob('assets/*/manifest.json')):
-              with open(manifest_path) as f:
-                  manifest = json.load(f)
-
-              if manifest.get('type') != 'asset':
-                  continue
-
-              asset_id = manifest['id']
-              filename = f"{asset_id}.gtheme"
-
-              entry = {
-                  'id': asset_id,
-                  'name': manifest['name'],
-                  'version': manifest.get('version', '1'),
-                  'authors': manifest.get('authors', ['Unknown']),
-                  'category': manifest.get('category', 'Theme'),
-                  'type': manifest.get('type', 'asset'),
-                  'description': manifest.get('description', ''),
-                  'contents': manifest.get('contents', []),
-                  'file': filename,
-                  'url': f"{r2_url}/assets/{asset_id}/{filename}",
-                  'reviewed': manifest.get('reviewed', False)
-              }
-              catalog['assets'].append(entry)
-
           with open('catalog.json', 'w') as f:
               json.dump(catalog, f, indent=2)
 
-          print(f"Generated catalog.json with {len(catalog['apps'])} apps and {len(catalog['assets'])} assets")
+          print(f"Generated catalog.json with {len(catalog['apps'])} apps")
         shell: python
         env:
           R2_PUBLIC_URL: ${{ env.R2_PUBLIC_URL }}
