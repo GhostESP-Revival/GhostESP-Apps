@@ -45,7 +45,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ghostesp-firmware
-          key: ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}
+          key: ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}-${{ hashFiles('apps/**/manifest.json') }}
+          restore-keys: |
+            ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}-
 
       - name: Clone GhostESP firmware
         run: |
