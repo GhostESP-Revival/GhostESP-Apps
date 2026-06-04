@@ -8,9 +8,9 @@
   "type": "app",
   "targets": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"],
   "license": "GPL-3.0",
-  "source_repo": "",
-  "commit_sha": "",
-  "preview": "",
-  "changelog": "v1.0.0: Initial release - test",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "two-point-zero",
+  "source_subdir": "plugins/examples/esp32_finder",
+  "changelog": "v1.0.0: Initial release",
   "reviewed": true
 }

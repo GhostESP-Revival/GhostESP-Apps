@@ -1,50 +1,35 @@
-# GhostESP App & Asset Catalog
+# GhostESP App Catalog
 
-Community-driven marketplace for GhostESP apps (`.gapp`) and asset packs (`.gtheme`).
+Community-driven catalog for GhostESP apps (`.gapp`).
 
 ## How It Works
 
-1. **Contributors** submit apps and asset packs via Pull Request
-2. **Maintainers** review and merge PRs
-3. **CI automatically** builds binaries with `gbt` and uploads to Cloudflare R2 CDN
-4. **The website** fetches `catalog.json` to display marketplace items
-
-## Repository Structure
-
-```
-apps/                    # App manifests
-  <app_id>/
-    manifest.json        # App metadata + config
-    source/              # App source code (built by gbt)
-assets/                  # Asset pack manifests
-  <asset_id>/
-    manifest.json        # Asset metadata + config
-    source/              # Asset source files (built by gbt)
-templates/               # Manifest templates for contributors
-catalog.json             # Auto-generated index (do not edit manually)
-```
+1. **Contributors** PR a manifest pointing to their source repo
+2. **Maintainers** review and merge
+3. **CI** clones source, builds `.gapp` with `gbt`, uploads to Cloudflare R2
+4. **Website** fetches `catalog.json` to display apps
 
 ## Submitting an App
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed instructions.
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Quick start:
 1. Fork this repo
 2. Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`
-3. Put your app source code in `apps/<your_app_id>/source/`
+3. Fill in `source_repo` (your public GitHub repo) and `source_subdir`
 4. Open a Pull Request
 
-## Submitting an Asset Pack
+## Building from GhostESP firmware
 
-1. Fork this repo
-2. Copy `templates/asset-manifest.json` to `assets/<your_pack_id>/manifest.json`
-3. Put your asset source files in `assets/<your_pack_id>/source/`
-4. Open a Pull Request
+Apps built from the GhostESP firmware tree use:
+```json
+{
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "two-point-zero",
+  "source_subdir": "plugins/examples/your_app"
+}
+```
 
 ## CDN
 
-All built binaries are hosted on Cloudflare R2 at `https://gesp.fuckyourcdn.com`.
-
-## License
-
-Individual apps and assets retain their own licenses as specified in their manifests.
+Built `.gapp` files are hosted at `https://gesp.fuckyourcdn.com`.

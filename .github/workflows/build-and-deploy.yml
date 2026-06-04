@@ -12,6 +12,7 @@ env:
   R2_BUCKET: ghostesp-marketplace
   R2_PUBLIC_URL: https://gesp.fuckyourcdn.com
   GHOSTESP_REPO: https://github.com/GhostESP-Revival/GhostESP.git
+  GHOSTESP_BRANCH: two-point-zero
 
 jobs:
   build-apps:
@@ -44,14 +45,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ghostesp-firmware
-          key: ghostesp-firmware-two-point-zero
+          key: ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}
 
       - name: Clone GhostESP firmware
         run: |
           if [ ! -d "ghostesp-firmware/components" ]; then
-            git clone --depth=1 -b two-point-zero ${{ env.GHOSTESP_REPO }} ghostesp-firmware
+            git clone --depth=1 -b ${{ env.GHOSTESP_BRANCH }} ${{ env.GHOSTESP_REPO }} ghostesp-firmware
           fi
-          ln -sf "$PWD/ghostesp-firmware/components" "$PWD/components"
 
       - name: Build and upload apps
         env:
@@ -68,11 +68,7 @@ jobs:
           r2_bucket = os.environ['R2_BUCKET']
           r2_url = os.environ['R2_PUBLIC_URL']
           r2_endpoint = os.environ['R2_ENDPOINT']
-
-          # Verify components symlink exists
-          if not os.path.isdir('components/espressif__elf_loader'):
-              print("ERROR: components/espressif__elf_loader not found")
-              raise SystemExit(1)
+          firmware_dir = os.path.abspath('ghostesp-firmware')
 
           for manifest_path in glob.glob('apps/*/manifest.json'):
               with open(manifest_path) as f:
@@ -85,24 +81,34 @@ jobs:
               version = manifest['version']
               targets = manifest.get('targets', ['esp32s3'])
               source_repo = manifest.get('source_repo', '')
-              commit_sha = manifest.get('commit_sha', 'main')
-              local_source = os.path.join(os.path.dirname(manifest_path), 'source')
+              source_branch = manifest.get('source_branch', 'main')
+              source_subdir = manifest.get('source_subdir', '.')
 
-              if source_repo:
+              if not source_repo:
+                  print(f"Skipping {app_id}: no source_repo")
+                  continue
+
+              # Determine source directory
+              if source_repo == os.environ.get('GHOSTESP_REPO', ''):
+                  # Build from firmware tree
+                  source_dir = os.path.join(firmware_dir, source_subdir)
+              else:
+                  # Clone external repo
                   clone_dir = f'sources/{app_id}'
-                  print(f"Cloning {source_repo} at {commit_sha}...")
+                  if os.path.isdir(clone_dir):
+                      shutil.rmtree(clone_dir)
+                  print(f"Cloning {source_repo} at {source_branch}...")
                   result = subprocess.run(
-                      ['git', 'clone', '--depth=1', source_repo, clone_dir],
+                      ['git', 'clone', '--depth=1', '-b', source_branch, source_repo, clone_dir],
                       capture_output=True, text=True
                   )
                   if result.returncode != 0:
                       print(f"Clone failed for {app_id}: {result.stderr}")
                       continue
-                  source_dir = clone_dir
-              elif os.path.isdir(local_source):
-                  source_dir = local_source
-              else:
-                  print(f"Skipping {app_id}: no source found")
+                  source_dir = os.path.join(clone_dir, source_subdir) if source_subdir != '.' else clone_dir
+
+              if not os.path.isdir(source_dir):
+                  print(f"Skipping {app_id}: source dir not found: {source_dir}")
                   continue
 
               # Upload preview image if specified
@@ -118,12 +124,12 @@ jobs:
                       ], check=True)
                       print(f"Uploaded preview: {r2_url}/{r2_key}")
 
-              for target in targets:
-                  # Clean build directory between targets
-                  build_dir = os.path.join(source_dir, 'build')
-                  if os.path.isdir(build_dir):
-                      shutil.rmtree(build_dir)
+              # Clean build dir
+              build_dir = os.path.join(source_dir, 'build')
+              if os.path.isdir(build_dir):
+                  shutil.rmtree(build_dir)
 
+              for target in targets:
                   print(f"Building {app_id} v{version} for {target}...")
                   result = subprocess.run(
                       ['gbt', 'dist', '--target', target, '--gapp', '--out', f'build/{app_id}', source_dir],

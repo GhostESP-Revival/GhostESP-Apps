@@ -21,9 +21,10 @@ Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`:
 | `type` | Yes | Must be `"app"` |
 | `targets` | Yes | Array of targets: `esp32`, `esp32s2`, `esp32s3`, `esp32c5`, `esp32c6` |
 | `license` | Yes | SPDX license identifier |
-| `source_repo` | No | GitHub URL to your app source repo (or leave empty if source is in this repo) |
-| `commit_sha` | No | Commit hash with the source to build |
-| `preview` | No | Screenshot filename in source directory (e.g., `screenshot.png`) |
+| `source_repo` | Yes | GitHub URL to your app source repo |
+| `source_branch` | Yes | Branch to build from (e.g., `main`) |
+| `source_subdir` | Yes | Subdirectory within the repo containing the app (e.g., `.` or `plugins/examples/my_app`) |
+| `preview` | No | Screenshot filename in the app directory (e.g., `screenshot.png`) |
 | `changelog` | No | Version changelog |
 
 ## Source Repo Requirements
@@ -33,14 +34,10 @@ Your source repo must:
 2. Build successfully with `gbt dist --target esp32s3 --gapp .`
 3. Be a public GitHub repository
 
-## Example
+If your app is part of a larger repo, use `source_subdir` to point to the app directory.
 
-```
-apps/my_app/
-└── manifest.json    # Points to your external source repo
-```
+## Example: Standalone app
 
-Your manifest.json:
 ```json
 {
   "id": "my_app",
@@ -48,12 +45,34 @@ Your manifest.json:
   "version": "1.0.0",
   "authors": ["YourName"],
   "category": "Tools",
-  "description": "A cool app for GhostESP.",
+  "description": "A cool app.",
   "type": "app",
   "targets": ["esp32s3"],
   "license": "GPL-3.0",
   "source_repo": "https://github.com/YourName/my-ghostesp-app",
-  "commit_sha": "abc123def456",
+  "source_branch": "main",
+  "source_subdir": ".",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": false
+}
+```
+
+## Example: App in GhostESP firmware
+
+```json
+{
+  "id": "my_app",
+  "name": "My App",
+  "version": "1.0.0",
+  "authors": ["YourName"],
+  "category": "Tools",
+  "description": "A firmware-bundled app.",
+  "type": "app",
+  "targets": ["esp32s3"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "two-point-zero",
+  "source_subdir": "plugins/examples/my_app",
   "changelog": "v1.0.0: Initial release",
   "reviewed": false
 }
@@ -61,7 +80,7 @@ Your manifest.json:
 
 ## Updating
 
-Increment the version in your manifest, update `commit_sha` to point to the new source commit, and open a new PR.
+Increment the version in your manifest, update `source_branch`/`commit_sha` if needed, and open a new PR.
 
 ## Rules
 
