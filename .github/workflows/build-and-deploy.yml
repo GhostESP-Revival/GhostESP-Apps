@@ -11,6 +11,7 @@ on:
 env:
   R2_BUCKET: ghostesp-marketplace
   R2_PUBLIC_URL: https://gesp.fuckyourcdn.com
+  GHOSTESP_REPO: https://github.com/GhostESP-Revival/GhostESP.git
 
 jobs:
   build-apps:
@@ -32,6 +33,18 @@ jobs:
           path: ~/.ghostbt/esp-idf
           key: esp-idf-v6.0.1
 
+      - name: Cache GhostESP firmware
+        uses: actions/cache@v4
+        with:
+          path: ghostesp-firmware
+          key: ghostesp-firmware-${{ github.sha }}
+
+      - name: Clone GhostESP firmware
+        run: |
+          if [ ! -d "ghostesp-firmware/components" ]; then
+            git clone --depth=1 ${{ env.GHOSTESP_REPO }} ghostesp-firmware
+          fi
+
       - name: Install ESP-IDF
         run: gbt setup
 
@@ -45,10 +58,18 @@ jobs:
           import subprocess
           import os
           import glob
+          import shutil
 
           r2_bucket = os.environ['R2_BUCKET']
           r2_url = os.environ['R2_PUBLIC_URL']
           r2_endpoint = os.environ['R2_ENDPOINT']
+
+          # Create symlink for components directory at repo root
+          components_src = os.path.abspath('ghostesp-firmware/components')
+          components_dst = os.path.abspath('components')
+          if os.path.isdir(components_src) and not os.path.exists(components_dst):
+              os.symlink(components_src, components_dst)
+              print(f"Symlinked {components_src} -> {components_dst}")
 
           for manifest_path in glob.glob('apps/*/manifest.json'):
               with open(manifest_path) as f:

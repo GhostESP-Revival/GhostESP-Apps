@@ -21,8 +21,9 @@ Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`:
 | `type` | Yes | Must be `"app"` |
 | `targets` | Yes | Array of targets: `esp32`, `esp32s2`, `esp32s3`, `esp32c5`, `esp32c6` |
 | `license` | Yes | SPDX license identifier |
-| `source_repo` | Yes | GitHub URL to your app source repo |
-| `commit_sha` | Yes | Commit hash with the source to build |
+| `source_repo` | No | GitHub URL to your app source repo (or leave empty if source is in this repo) |
+| `commit_sha` | No | Commit hash with the source to build |
+| `preview` | No | Screenshot filename in source directory (e.g., `screenshot.png`) |
 | `changelog` | No | Version changelog |
 
 ## Source Repo Requirements
