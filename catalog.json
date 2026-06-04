@@ -1,14 +1,22 @@
 {
-  "generated_at": "2026-06-04T00:00:00Z",
+  "generated_at": "2026-06-04T05:17:23.170142+00:00",
   "apps": [
     {
       "id": "device_inspector",
       "name": "Device Inspector",
       "version": "1.0.0",
-      "authors": ["GhostESP"],
+      "authors": [
+        "GhostESP"
+      ],
       "category": "System",
       "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
-      "targets": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"],
+      "targets": [
+        "esp32",
+        "esp32s2",
+        "esp32s3",
+        "esp32c5",
+        "esp32c6"
+      ],
       "downloads": {
         "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32.gapp",
         "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32s2.gapp",
@@ -24,10 +32,18 @@
       "id": "esp32_finder",
       "name": "ESP32 Finder",
       "version": "1.0.0",
-      "authors": ["GhostESP"],
+      "authors": [
+        "GhostESP"
+      ],
       "category": "Tools",
       "description": "Continuous WiFi OUI scanner with canvas dashboard and RGB blink.",
-      "targets": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"],
+      "targets": [
+        "esp32",
+        "esp32s2",
+        "esp32s3",
+        "esp32c5",
+        "esp32c6"
+      ],
       "downloads": {
         "esp32": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32.gapp",
         "esp32s2": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32s2.gapp",
@@ -40,19 +56,5 @@
       "reviewed": true
     }
   ],
-  "assets": [
-    {
-      "id": "dedsec",
-      "name": "DedSec",
-      "version": "1",
-      "authors": ["GhostESP"],
-      "category": "Theme",
-      "type": "asset",
-      "description": "Dark DedSec-inspired GhostESP theme with purple accents, skull app icons, and a full-screen menu background.",
-      "contents": ["Icons", "Background", "Colors"],
-      "file": "dedsec.gtheme",
-      "url": "https://gesp.fuckyourcdn.com/assets/dedsec/dedsec.gtheme",
-      "reviewed": true
-    }
-  ]
+  "assets": []
 }
