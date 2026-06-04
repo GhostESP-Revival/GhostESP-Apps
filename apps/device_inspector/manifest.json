@@ -1,7 +1,7 @@
 {
   "id": "device_inspector",
   "name": "Device Inspector",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": ["GhostESP"],
   "category": "System",
   "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
@@ -11,6 +11,6 @@
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "two-point-zero",
   "source_subdir": "plugins/examples/device_inspector",
-  "changelog": "v1.0.0: Initial release",
+  "changelog": "v1.0.1: Trigger CI build test",
   "reviewed": true
 }
