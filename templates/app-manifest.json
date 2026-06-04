@@ -10,6 +10,7 @@
   "license": "GPL-3.0",
   "source_repo": "https://github.com/yourname/your-app",
   "commit_sha": "abc123def456...",
+  "preview": "screenshot.png",
   "changelog": "v1.0.0: Initial release",
   "reviewed": false
 }

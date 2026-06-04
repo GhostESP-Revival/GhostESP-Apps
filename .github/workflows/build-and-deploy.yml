@@ -81,6 +81,19 @@ jobs:
                   print(f"Skipping {app_id}: no source found")
                   continue
 
+              # Upload preview image if specified
+              preview_file = manifest.get('preview', '')
+              if preview_file:
+                  preview_path = os.path.join(source_dir, preview_file)
+                  if os.path.isfile(preview_path):
+                      r2_key = f"apps/{app_id}/{preview_file}"
+                      subprocess.run([
+                          'aws', 's3', 'cp', preview_path, f"s3://{r2_bucket}/{r2_key}",
+                          '--endpoint-url', r2_endpoint,
+                          '--content-type', 'image/png'
+                      ], check=True)
+                      print(f"Uploaded preview: {r2_url}/{r2_key}")
+
               for target in targets:
                   print(f"Building {app_id} v{version} for {target}...")
                   result = subprocess.run(
@@ -107,7 +120,7 @@ jobs:
 
   regenerate-catalog:
     needs: build-apps
-    if: needs.build-apps.result == 'success'
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -138,6 +151,7 @@ jobs:
               app_id = manifest['id']
               version = manifest['version']
               targets = manifest.get('targets', [])
+              preview_file = manifest.get('preview', '')
 
               downloads = {}
               for target in targets:
@@ -155,6 +169,7 @@ jobs:
                   'downloads': downloads,
                   'license': manifest.get('license', ''),
                   'changelog': manifest.get('changelog', ''),
+                  'preview': f"{r2_url}/apps/{app_id}/{preview_file}" if preview_file else '',
                   'reviewed': manifest.get('reviewed', False)
               }
               catalog['apps'].append(entry)
