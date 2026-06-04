@@ -130,13 +130,14 @@ jobs:
                   shutil.rmtree(build_dir)
 
               for target in targets:
+                  print(f"\n{'='*60}")
                   print(f"Building {app_id} v{version} for {target}...")
+                  print(f"{'='*60}")
                   result = subprocess.run(
-                      ['gbt', 'dist', '--target', target, '--gapp', '--out', f'build/{app_id}', source_dir],
-                      capture_output=True, text=True
+                      ['gbt', 'dist', '--target', target, '--gapp', '--out', f'build/{app_id}', source_dir]
                   )
                   if result.returncode != 0:
-                      print(f"Build failed for {app_id}/{target}: {result.stderr}")
+                      print(f"Build failed for {app_id}/{target}")
                       continue
 
                   gapp_files = glob.glob(f'build/{app_id}/**/*.gapp', recursive=True)
