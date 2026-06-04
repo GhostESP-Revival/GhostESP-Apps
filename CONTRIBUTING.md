@@ -1,26 +1,14 @@
 # Contributing to GhostESP App Catalog
 
-Thank you for your interest in contributing to the GhostESP marketplace!
+## How It Works
 
-## Requirements
+1. You PR a `manifest.json` pointing to your source repo
+2. Maintainers review and merge
+3. CI clones your source, builds `.gapp` with `gbt`, uploads to R2 CDN
 
-1. **Open Source License** - Apps must be licensed under an open source license (GPL-3.0 recommended)
-2. **No malicious code** - Apps must not cause harm to devices or data
-3. **Working source code** - Your source must build successfully with `gbt`
-4. **Unique ID** - Your app/asset ID must not conflict with existing entries
+## Manifest Format
 
-## Submitting an App
-
-### Step 1: Prepare your source code
-
-Your app source should be a valid `gbt` project that builds with:
-```bash
-gbt dist --target esp32s3 --gapp your_app/source/
-```
-
-### Step 2: Create your manifest
-
-Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json` and fill in all fields:
+Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`:
 
 | Field | Required | Description |
 |-------|----------|-------------|
@@ -33,50 +21,49 @@ Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json` and fil
 | `type` | Yes | Must be `"app"` |
 | `targets` | Yes | Array of targets: `esp32`, `esp32s2`, `esp32s3`, `esp32c5`, `esp32c6` |
 | `license` | Yes | SPDX license identifier |
-| `source_url` | No | Link to external source repo (if separate) |
+| `source_repo` | Yes | GitHub URL to your app source repo |
+| `commit_sha` | Yes | Commit hash with the source to build |
 | `changelog` | No | Version changelog |
 
-### Step 3: Add your source code
+## Source Repo Requirements
 
-Place your app source in `apps/<your_app_id>/source/`.
+Your source repo must:
+1. Contain a valid `gbt` app project
+2. Build successfully with `gbt dist --target esp32s3 --gapp .`
+3. Be a public GitHub repository
 
-### Step 4: Open a Pull Request
+## Example
 
-1. Fork this repository
-2. Create a branch: `git checkout -b yourname/your_app_id`
-3. Commit your changes
-4. Open a PR against `main`
+```
+apps/my_app/
+└── manifest.json    # Points to your external source repo
+```
 
-CI will automatically validate your manifest. After review and merge, your app will be built and deployed to the CDN.
+Your manifest.json:
+```json
+{
+  "id": "my_app",
+  "name": "My App",
+  "version": "1.0.0",
+  "authors": ["YourName"],
+  "category": "Tools",
+  "description": "A cool app for GhostESP.",
+  "type": "app",
+  "targets": ["esp32s3"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/YourName/my-ghostesp-app",
+  "commit_sha": "abc123def456",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": false
+}
+```
 
-## Submitting an Asset Pack
+## Updating
 
-Same process but:
-1. Copy `templates/asset-manifest.json` to `assets/<your_pack_id>/manifest.json`
-2. Place source files in `assets/<your_pack_id>/source/`
-3. Build command: `gbt asset pack --archive your_pack/source/`
-
-### Asset manifest fields
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `id` | Yes | Unique identifier |
-| `name` | Yes | Display name |
-| `version` | Yes | Version string |
-| `authors` | Yes | Array of author names |
-| `category` | Yes | Category (e.g., Theme) |
-| `type` | Yes | Must be `"asset"` |
-| `description` | Yes | Short description |
-| `contents` | No | Array of what's included (Icons, Background, Colors) |
-| `license` | Yes | SPDX license identifier |
-
-## Updating an App or Asset
-
-Increment the version in your manifest and open a new PR. The CI will build and upload the new version.
+Increment the version in your manifest, update `commit_sha` to point to the new source commit, and open a new PR.
 
 ## Rules
 
 - Do not edit `catalog.json` directly - it is auto-generated
-- Do not commit binary `.gapp` or `.gtheme` files - they are built by CI
-- Keep source code clean and well-documented
-- Respond to review feedback within 14 days or your submission may be removed
+- Your source repo must be public
+- Respond to review feedback within 14 days

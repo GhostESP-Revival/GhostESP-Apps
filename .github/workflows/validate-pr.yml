@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'apps/**/manifest.json'
-      - 'assets/**/manifest.json'
 
 jobs:
   validate:
@@ -12,36 +11,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install ghostbt
-        run: pip install ghostbt
-
       - name: Validate changed manifests
         run: |
           import json
           import sys
           import os
+          import re
 
-          required_app_fields = ['id', 'name', 'version', 'authors', 'category', 'description', 'type', 'targets', 'license']
-          required_asset_fields = ['id', 'name', 'version', 'authors', 'category', 'type', 'description', 'license']
+          required_fields = ['id', 'name', 'version', 'authors', 'category', 'description', 'type', 'targets', 'license', 'source_repo', 'commit_sha']
 
-          valid_categories = ['System', 'Tools', 'Games', 'Bluetooth', 'GPIO', 'Infrared', 'Media', 'NFC', 'RFID', 'Sub-GHz', 'USB', 'Theme']
+          valid_categories = ['System', 'Tools', 'Games', 'Bluetooth', 'GPIO', 'Infrared', 'Media', 'NFC', 'RFID', 'Sub-GHz', 'USB']
           valid_targets = ['esp32', 'esp32s2', 'esp32s3', 'esp32c5', 'esp32c6']
-          valid_types = ['app', 'asset']
 
           errors = []
 
-          # Find all manifest.json files in apps/ and assets/
-          for root, dirs, files in os.walk('.'):
-              if 'manifest.json' in os.path.basename(root) or (os.path.basename(root) in ['apps', 'assets']):
-                  continue
-              if os.path.basename(root) == 'apps' or os.path.basename(root) == 'assets':
-                  continue
-              if 'manifest.json' in files and ('apps' in root or 'assets' in root):
+          for root, dirs, files in os.walk('apps'):
+              if 'manifest.json' in files and root != 'apps':
                   path = os.path.join(root, 'manifest.json')
                   try:
                       with open(path) as f:
@@ -50,20 +35,16 @@ jobs:
                       errors.append(f"{path}: Invalid JSON - {e}")
                       continue
 
-                  item_type = manifest.get('type', '')
-                  required = required_app_fields if item_type == 'app' else required_asset_fields
-
-                  for field in required:
+                  for field in required_fields:
                       if field not in manifest:
                           errors.append(f"{path}: Missing required field '{field}'")
 
-                  if item_type not in valid_types:
-                      errors.append(f"{path}: Invalid type '{item_type}'. Must be 'app' or 'asset'")
+                  if manifest.get('type') != 'app':
+                      errors.append(f"{path}: 'type' must be 'app'")
 
-                  if item_type == 'app':
-                      for target in manifest.get('targets', []):
-                          if target not in valid_targets:
-                              errors.append(f"{path}: Invalid target '{target}'")
+                  for target in manifest.get('targets', []):
+                      if target not in valid_targets:
+                          errors.append(f"{path}: Invalid target '{target}'")
 
                   if manifest.get('category', '') not in valid_categories:
                       errors.append(f"{path}: Invalid category '{manifest.get('category', '')}'")
@@ -71,12 +52,16 @@ jobs:
                   if not isinstance(manifest.get('authors', []), list):
                       errors.append(f"{path}: 'authors' must be an array")
 
-                  version = manifest.get('version', '')
-                  if not version:
-                      errors.append(f"{path}: 'version' is required")
+                  source_repo = manifest.get('source_repo', '')
+                  if not source_repo or not re.match(r'https://github\.com/.+/.+', source_repo):
+                      errors.append(f"{path}: 'source_repo' must be a valid GitHub URL")
+
+                  commit_sha = manifest.get('commit_sha', '')
+                  if not commit_sha or not re.match(r'^[a-f0-9]{6,40}$|^main$', commit_sha):
+                      errors.append(f"{path}: 'commit_sha' must be a valid git commit hash or 'main'")
 
           if errors:
-              print("Manifest validation failed:")
+              print("Validation failed:")
               for error in errors:
                   print(f"  - {error}")
               sys.exit(1)
