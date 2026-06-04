@@ -1,0 +1,12 @@
+{
+  "id": "your_theme_id",
+  "name": "Your Theme Name",
+  "version": "1",
+  "authors": ["YourName"],
+  "category": "Theme",
+  "type": "asset",
+  "description": "A short description of your asset pack.",
+  "contents": ["Icons", "Background", "Colors"],
+  "license": "GPL-3.0",
+  "reviewed": false
+}

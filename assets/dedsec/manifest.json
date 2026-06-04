@@ -1,0 +1,12 @@
+{
+  "id": "dedsec",
+  "name": "DedSec",
+  "version": "1",
+  "authors": ["GhostESP"],
+  "category": "Theme",
+  "type": "asset",
+  "description": "Dark DedSec-inspired GhostESP theme with purple accents, skull app icons, and a full-screen menu background.",
+  "contents": ["Icons", "Background", "Colors"],
+  "license": "GPL-3.0",
+  "reviewed": true
+}

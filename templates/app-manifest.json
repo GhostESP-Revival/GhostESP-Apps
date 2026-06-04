@@ -1,0 +1,14 @@
+{
+  "id": "your_app_id",
+  "name": "Your App Name",
+  "version": "1.0.0",
+  "authors": ["YourName"],
+  "category": "Tools",
+  "description": "A short description of what your app does.",
+  "type": "app",
+  "targets": ["esp32s3"],
+  "license": "GPL-3.0",
+  "source_url": "",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": false
+}

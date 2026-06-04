@@ -1,0 +1,14 @@
+{
+  "id": "esp32_finder",
+  "name": "ESP32 Finder",
+  "version": "1.0.0",
+  "authors": ["GhostESP"],
+  "category": "Tools",
+  "description": "Continuous WiFi OUI scanner with canvas dashboard and RGB blink.",
+  "type": "app",
+  "targets": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"],
+  "license": "GPL-3.0",
+  "source_url": "",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": true
+}

@@ -1,0 +1,14 @@
+{
+  "id": "device_inspector",
+  "name": "Device Inspector",
+  "version": "1.0.0",
+  "authors": ["GhostESP"],
+  "category": "System",
+  "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
+  "type": "app",
+  "targets": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"],
+  "license": "GPL-3.0",
+  "source_url": "",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": true
+}
