@@ -18,11 +18,11 @@
         "esp32c6"
       ],
       "downloads": {
-        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32.gapp",
-        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32s2.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32c6.gapp"
+        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32.gapp",
+        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32s2.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32c6.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0.0: Initial release",
