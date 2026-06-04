@@ -30,23 +30,16 @@ jobs:
       - name: Cache ESP-IDF
         uses: actions/cache@v4
         with:
-          path: ~/.ghostbt/esp-idf
-          key: esp-idf-v6.0.1
-
-      - name: Cache GhostESP firmware
-        uses: actions/cache@v4
-        with:
-          path: ghostesp-firmware
-          key: ghostesp-firmware-${{ github.sha }}
-
-      - name: Clone GhostESP firmware
-        run: |
-          if [ ! -d "ghostesp-firmware/components" ]; then
-            git clone --depth=1 ${{ env.GHOSTESP_REPO }} ghostesp-firmware
-          fi
+          path: |
+            ~/.ghostbt/esp-idf
+            ~/.espressif
+          key: esp-idf-v6.0.1-tools
 
       - name: Install ESP-IDF
-        run: gbt setup
+        run: |
+          gbt setup
+          ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6
+          ~/.ghostbt/esp-idf/python_env/idf6.0_py3.12_env/bin/pip install click
 
       - name: Build and upload apps
         env:
