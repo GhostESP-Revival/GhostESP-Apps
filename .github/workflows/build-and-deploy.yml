@@ -40,6 +40,19 @@ jobs:
           gbt setup
           ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6
 
+      - name: Cache GhostESP firmware
+        uses: actions/cache@v4
+        with:
+          path: ghostesp-firmware
+          key: ghostesp-firmware-two-point-zero
+
+      - name: Clone GhostESP firmware
+        run: |
+          if [ ! -d "ghostesp-firmware/components" ]; then
+            git clone --depth=1 -b two-point-zero ${{ env.GHOSTESP_REPO }} ghostesp-firmware
+          fi
+          ln -sf "$PWD/ghostesp-firmware/components" "$PWD/components"
+
       - name: Build and upload apps
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
@@ -56,12 +69,10 @@ jobs:
           r2_url = os.environ['R2_PUBLIC_URL']
           r2_endpoint = os.environ['R2_ENDPOINT']
 
-          # Create symlink for components directory at repo root
-          components_src = os.path.abspath('ghostesp-firmware/components')
-          components_dst = os.path.abspath('components')
-          if os.path.isdir(components_src) and not os.path.exists(components_dst):
-              os.symlink(components_src, components_dst)
-              print(f"Symlinked {components_src} -> {components_dst}")
+          # Verify components symlink exists
+          if not os.path.isdir('components/espressif__elf_loader'):
+              print("ERROR: components/espressif__elf_loader not found")
+              raise SystemExit(1)
 
           for manifest_path in glob.glob('apps/*/manifest.json'):
               with open(manifest_path) as f:
@@ -108,6 +119,11 @@ jobs:
                       print(f"Uploaded preview: {r2_url}/{r2_key}")
 
               for target in targets:
+                  # Clean build directory between targets
+                  build_dir = os.path.join(source_dir, 'build')
+                  if os.path.isdir(build_dir):
+                      shutil.rmtree(build_dir)
+
                   print(f"Building {app_id} v{version} for {target}...")
                   result = subprocess.run(
                       ['gbt', 'dist', '--target', target, '--gapp', '--out', f'build/{app_id}', source_dir],
