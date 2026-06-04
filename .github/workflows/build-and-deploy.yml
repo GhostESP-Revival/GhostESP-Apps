@@ -88,10 +88,18 @@ jobs:
                   print(f"Skipping {app_id}: no source_repo")
                   continue
 
+              # Normalize URLs for comparison (strip .git suffix and trailing slashes)
+              def normalize_url(url):
+                  return url.rstrip('/').removesuffix('.git')
+
+              source_repo_norm = normalize_url(source_repo)
+              firmware_repo_norm = normalize_url(os.environ.get('GHOSTESP_REPO', ''))
+
               # Determine source directory
-              if source_repo == os.environ.get('GHOSTESP_REPO', ''):
+              if source_repo_norm == firmware_repo_norm:
                   # Build from firmware tree
                   source_dir = os.path.join(firmware_dir, source_subdir)
+                  print(f"Using firmware tree: {source_dir}")
               else:
                   # Clone external repo
                   clone_dir = f'sources/{app_id}'
@@ -124,10 +132,26 @@ jobs:
                       ], check=True)
                       print(f"Uploaded preview: {r2_url}/{r2_key}")
 
-              # Clean build dir
+              # Clean build artifacts and stale sdkconfig to ensure fresh build
               build_dir = os.path.join(source_dir, 'build')
               if os.path.isdir(build_dir):
                   shutil.rmtree(build_dir)
+              for f in ('sdkconfig', 'sdkconfig.old'):
+                  p = os.path.join(source_dir, f)
+                  if os.path.isfile(p):
+                      os.remove(p)
+                      print(f"Removed stale {f}")
+
+              # Debug: show sdkconfig.defaults
+              sdkconfig_defaults = os.path.join(source_dir, 'sdkconfig.defaults')
+              if os.path.isfile(sdkconfig_defaults):
+                  print(f"Found sdkconfig.defaults at {sdkconfig_defaults}")
+                  with open(sdkconfig_defaults) as sf:
+                      for line in sf:
+                          if 'ELF_DYNAMIC' in line or 'SPIRAM' in line:
+                              print(f"  {line.rstrip()}")
+              else:
+                  print(f"WARNING: No sdkconfig.defaults found at {sdkconfig_defaults}")
 
               for target in targets:
                   print(f"\n{'='*60}")
@@ -138,6 +162,12 @@ jobs:
                   )
                   if result.returncode != 0:
                       print(f"Build failed for {app_id}/{target}")
+                      # Debug: show what was produced
+                      if os.path.isdir(build_dir):
+                          print(f"Build dir contents:")
+                          for f in os.listdir(build_dir):
+                              if f.endswith(('.bin', '.so', '.elf')):
+                                  print(f"  {f}")
                       continue
 
                   gapp_files = glob.glob(f'build/{app_id}/**/*.gapp', recursive=True)
@@ -224,4 +254,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add catalog.json
           git diff --staged --quiet || git commit -m "chore: regenerate catalog.json [skip ci]"
+          git pull --rebase origin main
           git push
