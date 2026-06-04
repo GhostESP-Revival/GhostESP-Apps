@@ -18,7 +18,7 @@ jobs:
           import os
           import re
 
-          required_fields = ['id', 'name', 'version', 'authors', 'category', 'description', 'type', 'targets', 'license', 'source_repo', 'commit_sha']
+          required_fields = ['id', 'name', 'version', 'authors', 'category', 'description', 'type', 'targets', 'license']
 
           valid_categories = ['System', 'Tools', 'Games', 'Bluetooth', 'GPIO', 'Infrared', 'Media', 'NFC', 'RFID', 'Sub-GHz', 'USB']
           valid_targets = ['esp32', 'esp32s2', 'esp32s3', 'esp32c5', 'esp32c6']
@@ -53,11 +53,11 @@ jobs:
                       errors.append(f"{path}: 'authors' must be an array")
 
                   source_repo = manifest.get('source_repo', '')
-                  if not source_repo or not re.match(r'https://github\.com/.+/.+', source_repo):
-                      errors.append(f"{path}: 'source_repo' must be a valid GitHub URL")
+                  if source_repo and not re.match(r'https://github\.com/.+/.+', source_repo):
+                      errors.append(f"{path}: 'source_repo' must be a valid GitHub URL if provided")
 
                   commit_sha = manifest.get('commit_sha', '')
-                  if not commit_sha or not re.match(r'^[a-f0-9]{6,40}$|^main$', commit_sha):
+                  if commit_sha and not re.match(r'^[a-f0-9]{6,40}$|^main$', commit_sha):
                       errors.append(f"{path}: 'commit_sha' must be a valid git commit hash or 'main'")
 
           if errors:

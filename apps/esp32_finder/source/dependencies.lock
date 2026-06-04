@@ -1,0 +1,28 @@
+dependencies:
+  espressif/cmake_utilities:
+    component_hash: 351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f
+    dependencies:
+    - name: idf
+      require: private
+      version: '>=4.1'
+    source:
+      registry_url: https://components.espressif.com/
+      type: service
+    version: 0.5.3
+  espressif/elf_loader:
+    dependencies: []
+    source:
+      path: ..\..\..\components\espressif__elf_loader
+      type: local
+    version: 1.3.1
+  idf:
+    source:
+      type: idf
+    version: 6.0.1
+direct_dependencies:
+- espressif/cmake_utilities
+- espressif/elf_loader
+- idf
+manifest_hash: ea2ebca7d3443838f228f85d9294071f1a22d3fab4211793e2dede656473998b
+target: esp32p4
+version: 3.0.0
