@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04T05:17:23.170142+00:00",
+  "generated_at": "2026-06-04T05:33:44.996723+00:00",
   "apps": [
     {
       "id": "device_inspector",
@@ -55,6 +55,5 @@
       "changelog": "v1.0.0: Initial release",
       "reviewed": true
     }
-  ],
-  "assets": []
+  ]
 }
