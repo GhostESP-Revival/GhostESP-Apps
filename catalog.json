@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-04T07:53:28.159019+00:00",
+  "generated_at": "2026-06-04T00:00:00+00:00",
   "apps": [
     {
       "id": "device_inspector",
       "name": "Device Inspector",
-      "version": "1.0.2",
+      "version": "1.0.0",
       "authors": [
         "GhostESP"
       ],
@@ -18,14 +18,14 @@
         "esp32c6"
       ],
       "downloads": {
-        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32.gapp",
-        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32s2.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32c6.gapp"
+        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32.gapp",
+        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32s2.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.0/device_inspector-1.0.0-esp32c6.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.0.1: Trigger CI build test",
+      "changelog": "v1.0.0: Initial release",
       "preview": "",
       "reviewed": true
     },
