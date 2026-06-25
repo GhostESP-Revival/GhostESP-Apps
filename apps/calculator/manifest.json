@@ -1,0 +1,16 @@
+{
+  "id": "calculator",
+  "name": "Calculator",
+  "version": "1.0.0",
+  "authors": ["GhostESP"],
+  "category": "Tools",
+  "description": "iOS-style calculator with touch, joystick, and encoder support.",
+  "type": "app",
+  "targets": ["esp32s3", "esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "two-point-zero",
+  "source_subdir": "plugins/examples/calculator",
+  "changelog": "v1.0.0: Initial release",
+  "reviewed": true
+}
