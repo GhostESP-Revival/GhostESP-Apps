@@ -1,10 +1,32 @@
 {
-  "generated_at": "2026-06-04T00:00:00+00:00",
+  "generated_at": "2026-06-25T05:39:48.568781+00:00",
   "apps": [
+    {
+      "id": "calculator",
+      "name": "Calculator",
+      "version": "1.0.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Tools",
+      "description": "iOS-style calculator with touch, joystick, and encoder support.",
+      "targets": [
+        "esp32s3",
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.0.0/calculator-1.0.0-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.0.0/calculator-1.0.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0.0: Initial release",
+      "preview": "",
+      "reviewed": true
+    },
     {
       "id": "device_inspector",
       "name": "Device Inspector",
-      "version": "1.0.0",
+      "version": "1.0.2",
       "authors": [
         "GhostESP"
       ],
@@ -18,14 +40,14 @@
         "esp32c6"
       ],
       "downloads": {
-        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32.gapp",
-        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32s2.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.0-esp32c6.gapp"
+        "esp32": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32.gapp",
+        "esp32s2": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32s2.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.0.2/device_inspector-1.0.2-esp32c6.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.0.0: Initial release",
+      "changelog": "v1.0.1: Trigger CI build test",
       "preview": "",
       "reviewed": true
     },
