@@ -7,6 +7,11 @@ on:
       - 'apps/**'
 
   workflow_dispatch:
+    inputs:
+      rebuild_all:
+        description: 'Build every catalog app instead of only changed apps'
+        type: boolean
+        default: true
 
 env:
   R2_BUCKET: ghostesp-marketplace
@@ -19,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -60,6 +67,8 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          REBUILD_ALL: ${{ github.event.inputs.rebuild_all || 'false' }}
         run: |
           import json
           import subprocess
@@ -72,7 +81,33 @@ jobs:
           r2_endpoint = os.environ['R2_ENDPOINT']
           firmware_dir = os.path.abspath('ghostesp-firmware')
 
-          for manifest_path in glob.glob('apps/*/manifest.json'):
+          if os.environ.get('REBUILD_ALL') == 'true':
+              manifest_paths = sorted(glob.glob('apps/*/manifest.json'))
+              print('Manual full rebuild requested')
+          else:
+              before = os.environ.get('EVENT_BEFORE', '')
+              head = os.environ.get('GITHUB_SHA', 'HEAD')
+              if not before or before == '0' * 40:
+                  manifest_paths = sorted(glob.glob('apps/*/manifest.json'))
+                  print('No base commit available; building all apps')
+              else:
+                  changed = subprocess.run(
+                      ['git', 'diff', '--name-only', before, head, '--', 'apps'],
+                      check=True, capture_output=True, text=True
+                  ).stdout.splitlines()
+                  app_ids = {
+                      path.split('/')[1]
+                      for path in changed
+                      if path.startswith('apps/') and len(path.split('/')) >= 2
+                  }
+                  manifest_paths = sorted(
+                      f'apps/{app_id}/manifest.json'
+                      for app_id in app_ids
+                      if os.path.isfile(f'apps/{app_id}/manifest.json')
+                  )
+                  print(f'Changed apps: {", ".join(app_ids) if app_ids else "none"}')
+
+          for manifest_path in manifest_paths:
               with open(manifest_path) as f:
                   manifest = json.load(f)
 
