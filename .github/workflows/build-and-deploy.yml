@@ -98,8 +98,8 @@ jobs:
               firmware_repo_norm = normalize_url(os.environ.get('GHOSTESP_REPO', ''))
 
               # Determine source directory
-              if source_repo_norm == firmware_repo_norm:
-                  # Build from firmware tree
+              if source_repo_norm == firmware_repo_norm and source_branch == os.environ['GHOSTESP_BRANCH']:
+                  # Reuse the cached firmware checkout only when it is on the requested branch.
                   source_dir = os.path.join(firmware_dir, source_subdir)
                   print(f"Using firmware tree: {source_dir}")
               else:
