@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T07:52:39.124427+00:00",
+  "generated_at": "2026-07-29T14:43:09.415223+00:00",
   "apps": [
     {
       "id": "calculator",
@@ -50,6 +50,26 @@
       "changelog": "v1.0.1: Trigger CI build test",
       "preview": "",
       "reviewed": true
+    },
+    {
+      "id": "doom_port",
+      "name": "Doom Port",
+      "version": "0.1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "DoomGeneric with a responsive RGB565 renderer, joystick controls, and bundled Freedoom game data.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.0/doom_port-0.1.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v0.1.0: Initial DoomGeneric release with bundled Freedoom.",
+      "preview": "",
+      "reviewed": false
     },
     {
       "id": "esp32_finder",
