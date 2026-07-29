@@ -1,0 +1,16 @@
+{
+  "id": "doom_port",
+  "name": "Doom Port",
+  "version": "0.1.0",
+  "authors": ["GhostESP"],
+  "category": "Games",
+  "description": "DoomGeneric with a responsive RGB565 renderer, joystick controls, and bundled Freedoom game data.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/doom_port",
+  "changelog": "v0.1.0: Initial DoomGeneric release with bundled Freedoom.",
+  "reviewed": false
+}
