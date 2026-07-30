@@ -8,6 +8,10 @@ on:
 
   workflow_dispatch:
     inputs:
+      app_id:
+        description: 'Build and deploy only this app ID (takes precedence over rebuild_all)'
+        type: string
+        default: ''
       rebuild_all:
         description: 'Build every catalog app instead of only changed apps'
         type: boolean
@@ -20,12 +24,100 @@ env:
   GHOSTESP_BRANCH: two-point-zero
 
 jobs:
-  build-apps:
+  select-apps:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+      has_builds: ${{ steps.select.outputs.has_builds }}
+      catalog_needed: ${{ steps.select.outputs.catalog_needed }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Select apps to build
+        id: select
+        env:
+          APP_ID: ${{ inputs.app_id || '' }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          REBUILD_ALL: ${{ inputs.rebuild_all || 'false' }}
+        run: |
+          import json
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          apps_dir = Path('apps')
+          requested_id = os.environ.get('APP_ID', '').strip()
+          catalog_needed = False
+
+          def all_app_ids():
+              return sorted(path.parent.name for path in apps_dir.glob('*/manifest.json'))
+
+          if requested_id:
+              if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]*', requested_id):
+                  raise RuntimeError(f'Invalid app ID: {requested_id!r}')
+              manifest_path = apps_dir / requested_id / 'manifest.json'
+              if not manifest_path.is_file():
+                  raise RuntimeError(f'Unknown app ID: {requested_id}')
+              app_ids = [requested_id]
+              catalog_needed = True
+              print(f'Manual build requested for: {requested_id}')
+          elif os.environ.get('REBUILD_ALL') == 'true':
+              app_ids = all_app_ids()
+              catalog_needed = True
+              print('Manual full rebuild requested')
+          else:
+              before = os.environ.get('EVENT_BEFORE', '')
+              head = os.environ.get('GITHUB_SHA', 'HEAD')
+              if not before or before == '0' * 40:
+                  app_ids = all_app_ids()
+                  catalog_needed = True
+                  print('No base commit available; building all apps')
+              else:
+                  changed = subprocess.run(
+                      ['git', 'diff', '--name-only', before, head, '--', 'apps'],
+                      check=True, capture_output=True, text=True
+                  ).stdout.splitlines()
+                  changed_ids = {
+                      path.split('/')[1]
+                      for path in changed
+                      if path.startswith('apps/') and len(path.split('/')) >= 2
+                  }
+                  app_ids = sorted(
+                      app_id for app_id in changed_ids
+                      if (apps_dir / app_id / 'manifest.json').is_file()
+                  )
+                  catalog_needed = bool(changed_ids)
+                  print(f'Changed apps: {", ".join(sorted(changed_ids)) if changed_ids else "none"}')
+
+          matrix_apps = []
+          for app_id in app_ids:
+              with open(apps_dir / app_id / 'manifest.json') as f:
+                  manifest = json.load(f)
+              if manifest.get('type') == 'app':
+                  matrix_apps.append({'app_id': app_id})
+
+          matrix = json.dumps({'include': matrix_apps}, separators=(',', ':'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'matrix={matrix}\n')
+              f.write(f'has_builds={str(bool(matrix_apps)).lower()}\n')
+              f.write(f'catalog_needed={str(catalog_needed).lower()}\n')
+        shell: python
+
+  build-apps:
+    needs: select-apps
+    if: needs['select-apps'].outputs.has_builds == 'true'
+    name: Build ${{ matrix.app_id }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.select-apps.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -52,23 +144,27 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ghostesp-firmware
-          key: ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}-${{ hashFiles('apps/**/manifest.json') }}
+          key: ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}
           restore-keys: |
             ghostesp-firmware-${{ env.GHOSTESP_BRANCH }}-
 
-      - name: Clone GhostESP firmware
+      - name: Update GhostESP firmware
         run: |
-          if [ ! -d "ghostesp-firmware/components" ]; then
-            git clone --depth=1 -b ${{ env.GHOSTESP_BRANCH }} ${{ env.GHOSTESP_REPO }} ghostesp-firmware
+          if [ -d "ghostesp-firmware/.git" ]; then
+            git -C ghostesp-firmware fetch --depth=1 origin ${{ env.GHOSTESP_BRANCH }}
+            git -C ghostesp-firmware checkout --force FETCH_HEAD
+            git -C ghostesp-firmware submodule sync --recursive
+            git -C ghostesp-firmware submodule update --init --recursive --depth 1
+          else
+            git clone --depth=1 --recurse-submodules -b ${{ env.GHOSTESP_BRANCH }} ${{ env.GHOSTESP_REPO }} ghostesp-firmware
           fi
 
-      - name: Build and upload apps
+      - name: Build and upload app
         env:
+          APP_ID: ${{ matrix.app_id }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
-          EVENT_BEFORE: ${{ github.event.before }}
-          REBUILD_ALL: ${{ github.event.inputs.rebuild_all || 'false' }}
         run: |
           import json
           import subprocess
@@ -80,32 +176,14 @@ jobs:
           r2_url = os.environ['R2_PUBLIC_URL']
           r2_endpoint = os.environ['R2_ENDPOINT']
           firmware_dir = os.path.abspath('ghostesp-firmware')
+          failures = []
 
-          if os.environ.get('REBUILD_ALL') == 'true':
-              manifest_paths = sorted(glob.glob('apps/*/manifest.json'))
-              print('Manual full rebuild requested')
-          else:
-              before = os.environ.get('EVENT_BEFORE', '')
-              head = os.environ.get('GITHUB_SHA', 'HEAD')
-              if not before or before == '0' * 40:
-                  manifest_paths = sorted(glob.glob('apps/*/manifest.json'))
-                  print('No base commit available; building all apps')
-              else:
-                  changed = subprocess.run(
-                      ['git', 'diff', '--name-only', before, head, '--', 'apps'],
-                      check=True, capture_output=True, text=True
-                  ).stdout.splitlines()
-                  app_ids = {
-                      path.split('/')[1]
-                      for path in changed
-                      if path.startswith('apps/') and len(path.split('/')) >= 2
-                  }
-                  manifest_paths = sorted(
-                      f'apps/{app_id}/manifest.json'
-                      for app_id in app_ids
-                      if os.path.isfile(f'apps/{app_id}/manifest.json')
-                  )
-                  print(f'Changed apps: {", ".join(app_ids) if app_ids else "none"}')
+          app_id = os.environ['APP_ID']
+          manifest_path = f'apps/{app_id}/manifest.json'
+          if not os.path.isfile(manifest_path):
+              raise RuntimeError(f'Manifest not found for {app_id}')
+          manifest_paths = [manifest_path]
+          print(f'Matrix build requested for: {app_id}')
 
           for manifest_path in manifest_paths:
               with open(manifest_path) as f:
@@ -123,6 +201,7 @@ jobs:
 
               if not source_repo:
                   print(f"Skipping {app_id}: no source_repo")
+                  failures.append(f'{app_id}: no source_repo')
                   continue
 
               # Normalize URLs for comparison (strip .git suffix and trailing slashes)
@@ -144,16 +223,18 @@ jobs:
                       shutil.rmtree(clone_dir)
                   print(f"Cloning {source_repo} at {source_branch}...")
                   result = subprocess.run(
-                      ['git', 'clone', '--depth=1', '-b', source_branch, source_repo, clone_dir],
+                      ['git', 'clone', '--depth=1', '--recurse-submodules', '-b', source_branch, source_repo, clone_dir],
                       capture_output=True, text=True
                   )
                   if result.returncode != 0:
                       print(f"Clone failed for {app_id}: {result.stderr}")
+                      failures.append(f'{app_id}: source clone failed')
                       continue
                   source_dir = os.path.join(clone_dir, source_subdir) if source_subdir != '.' else clone_dir
 
               if not os.path.isdir(source_dir):
                   print(f"Skipping {app_id}: source dir not found: {source_dir}")
+                  failures.append(f'{app_id}: source directory not found')
                   continue
 
               # Upload preview image if specified
@@ -194,11 +275,15 @@ jobs:
                   print(f"\n{'='*60}")
                   print(f"Building {app_id} v{version} for {target}...")
                   print(f"{'='*60}")
+                  package_dir = os.path.join('build', app_id)
+                  if os.path.isdir(package_dir):
+                      shutil.rmtree(package_dir)
                   result = subprocess.run(
-                      ['gbt', 'dist', '--target', target, '--gapp', '--out', f'build/{app_id}', source_dir]
+                      ['gbt', 'dist', '--target', target, '--gapp', '--out', package_dir, source_dir]
                   )
                   if result.returncode != 0:
                       print(f"Build failed for {app_id}/{target}")
+                      failures.append(f'{app_id}/{target}: build failed')
                       # Debug: show what was produced
                       if os.path.isdir(build_dir):
                           print(f"Build dir contents:")
@@ -207,7 +292,16 @@ jobs:
                                   print(f"  {f}")
                       continue
 
-                  gapp_files = glob.glob(f'build/{app_id}/**/*.gapp', recursive=True)
+                  gapp_files = glob.glob(os.path.join(package_dir, '**', '*.gapp'), recursive=True)
+                  if not gapp_files:
+                      print(f"Build produced no package for {app_id}/{target}")
+                      failures.append(f'{app_id}/{target}: no .gapp produced')
+                      continue
+                  expected_filename = f'{app_id}-{version}-{target}.gapp'
+                  if not any(os.path.basename(gapp) == expected_filename for gapp in gapp_files):
+                      print(f"Build produced no expected package for {app_id}/{target}: {expected_filename}")
+                      failures.append(f'{app_id}/{target}: expected .gapp not produced')
+                      continue
                   for gapp in gapp_files:
                       filename = os.path.basename(gapp)
                       r2_key = f"apps/{app_id}/v{version}/{filename}"
@@ -219,11 +313,18 @@ jobs:
                       ], check=True)
 
                       print(f"Uploaded: {r2_url}/{r2_key}")
+
+          if failures:
+              raise RuntimeError('App build/upload failures: ' + '; '.join(failures))
         shell: python
 
   regenerate-catalog:
-    needs: build-apps
-    if: always()
+    needs: [select-apps, build-apps]
+    if: >-
+      always() &&
+      needs['select-apps'].result == 'success' &&
+      needs['select-apps'].outputs.catalog_needed == 'true' &&
+      (needs['build-apps'].result == 'success' || needs['build-apps'].result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -235,9 +336,33 @@ jobs:
           import json
           import os
           import glob
+          import time
+          import urllib.error
+          import urllib.request
           from datetime import datetime, timezone
 
           r2_url = os.environ['R2_PUBLIC_URL']
+
+          def package_available(url):
+              request = urllib.request.Request(
+                  url, method='HEAD', headers={'User-Agent': 'GhostESP catalog builder'}
+              )
+              for attempt in range(3):
+                  try:
+                      with urllib.request.urlopen(request, timeout=20) as response:
+                          return 200 <= response.getcode() < 300
+                  except urllib.error.HTTPError as err:
+                      if not 500 <= err.code < 600:
+                          print(f'Package unavailable (HTTP {err.code}): {url}')
+                          return False
+                      reason = f'HTTP {err.code}'
+                  except urllib.error.URLError as err:
+                      reason = str(err.reason)
+                  if attempt < 2:
+                      print(f'Package check failed ({reason}); retrying: {url}')
+                      time.sleep(2 ** attempt)
+              print(f'Package unavailable after retries: {url}')
+              return False
 
           catalog = {
               'generated_at': datetime.now(timezone.utc).isoformat(),
@@ -257,9 +382,17 @@ jobs:
               preview_file = manifest.get('preview', '')
 
               downloads = {}
+              available_targets = []
               for target in targets:
                   filename = f"{app_id}-{version}-{target}.gapp"
-                  downloads[target] = f"{r2_url}/apps/{app_id}/v{version}/{filename}"
+                  url = f"{r2_url}/apps/{app_id}/v{version}/{filename}"
+                  if package_available(url):
+                      downloads[target] = url
+                      available_targets.append(target)
+
+              if not downloads:
+                  print(f'Skipping {app_id}: no published package is available')
+                  continue
 
               entry = {
                   'id': app_id,
@@ -268,7 +401,7 @@ jobs:
                   'authors': manifest.get('authors', ['Unknown']),
                   'category': manifest.get('category', 'Uncategorized'),
                   'description': manifest.get('description', ''),
-                  'targets': targets,
+                  'targets': available_targets,
                   'downloads': downloads,
                   'license': manifest.get('license', ''),
                   'changelog': manifest.get('changelog', ''),
