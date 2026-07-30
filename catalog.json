@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-30T07:46:14.921569+00:00",
+  "generated_at": "2026-07-30T09:20:19.397325+00:00",
   "apps": [
     {
       "id": "calculator",
       "name": "Calculator",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "authors": [
         "GhostESP"
       ],
@@ -15,11 +15,33 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.0.0/calculator-1.0.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.0.0/calculator-1.0.0-esp32c5.gapp"
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.0/calculator-1.1.0-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.0/calculator-1.1.0-esp32c5.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.0.0: Initial release",
+      "changelog": "v1.1.0: Development-deki release.",
+      "preview": "",
+      "reviewed": true
+    },
+    {
+      "id": "device_inspector",
+      "name": "Device Inspector",
+      "version": "1.1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "System",
+      "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
+      "targets": [
+        "esp32c5",
+        "esp32c6"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.0/device_inspector-1.1.0-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.0/device_inspector-1.1.0-esp32c6.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.1.0: Development-deki release.",
       "preview": "",
       "reviewed": true
     },
@@ -46,7 +68,7 @@
     {
       "id": "esp32_finder",
       "name": "ESP32 Finder",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "authors": [
         "GhostESP"
       ],
@@ -60,14 +82,14 @@
         "esp32c6"
       ],
       "downloads": {
-        "esp32": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32.gapp",
-        "esp32s2": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32s2.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.0.0/esp32_finder-1.0.0-esp32c6.gapp"
+        "esp32": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32.gapp",
+        "esp32s2": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32s2.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32c6.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.0.0: Initial release",
+      "changelog": "v1.1.0: Build from Development-deki",
       "preview": "",
       "reviewed": true
     },
