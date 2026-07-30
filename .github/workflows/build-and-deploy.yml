@@ -21,7 +21,7 @@ env:
   R2_BUCKET: ghostesp-marketplace
   R2_PUBLIC_URL: https://gesp.fuckyourcdn.com
   GHOSTESP_REPO: https://github.com/GhostESP-Revival/GhostESP.git
-  GHOSTESP_BRANCH: two-point-zero
+  GHOSTESP_BRANCH: Development-deki
 
 jobs:
   select-apps:
