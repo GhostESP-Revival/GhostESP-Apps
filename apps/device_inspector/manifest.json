@@ -11,6 +11,6 @@
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/device_inspector",
-  "changelog": "v1.1.0: Build from Development-deki",
+  "changelog": "v1.1.0: Development-deki release.",
   "reviewed": true
 }
