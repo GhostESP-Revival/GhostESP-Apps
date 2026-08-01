@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T09:20:19.397325+00:00",
+  "generated_at": "2026-08-01T06:50:13.915319+00:00",
   "apps": [
     {
       "id": "calculator",
@@ -48,7 +48,7 @@
     {
       "id": "doom_port",
       "name": "Doom Port",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "authors": [
         "GhostESP"
       ],
@@ -58,10 +58,10 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.0/doom_port-0.1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.2/doom_port-0.1.2-esp32c5.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v0.1.0: Initial DoomGeneric release with bundled Freedoom.",
+      "changelog": "v0.1.2: Corrected gallery icon rendering while retaining the bundled Freedoom release.",
       "preview": "",
       "reviewed": false
     },
@@ -92,6 +92,26 @@
       "changelog": "v1.1.0: Build from Development-deki",
       "preview": "",
       "reviewed": true
+    },
+    {
+      "id": "hackchat",
+      "name": "HackChat",
+      "version": "1.0.6",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Tools",
+      "description": "Send short nearby messages directly to other GhostESP devices over ESP-NOW.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/hackchat/v1.0.6/hackchat-1.0.6-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0.6: Fixed initial UI rendering, keyboard return, and message delivery; refresh now updates in place with simpler peer cards.",
+      "preview": "",
+      "reviewed": false
     },
     {
       "id": "qr_generator",
