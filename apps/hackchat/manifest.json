@@ -1,0 +1,16 @@
+{
+  "id": "hackchat",
+  "name": "HackChat",
+  "version": "1.0.6",
+  "authors": ["GhostESP"],
+  "category": "Tools",
+  "description": "Send short nearby messages directly to other GhostESP devices over ESP-NOW.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/espnow_messenger",
+  "changelog": "v1.0.6: Fixed initial UI rendering, keyboard return, and message delivery; refresh now updates in place with simpler peer cards.",
+  "reviewed": false
+}
