@@ -237,18 +237,23 @@ jobs:
                   failures.append(f'{app_id}: source directory not found')
                   continue
 
-              # Upload preview image if specified
-              preview_file = manifest.get('preview', '')
-              if preview_file:
-                  preview_path = os.path.join(source_dir, preview_file)
-                  if os.path.isfile(preview_path):
-                      r2_key = f"apps/{app_id}/{preview_file}"
-                      subprocess.run([
-                          'aws', 's3', 'cp', preview_path, f"s3://{r2_bucket}/{r2_key}",
-                          '--endpoint-url', r2_endpoint,
-                          '--content-type', 'image/png'
-                      ], check=True)
-                      print(f"Uploaded preview: {r2_url}/{r2_key}")
+              # Upload reviewed marketplace screenshots to versioned CDN paths.
+              manifest_dir = os.path.dirname(manifest_path)
+              mime_types = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp'}
+              for screenshot in manifest.get('screenshots', []):
+                  image_file = screenshot['path']
+                  image_path = os.path.join(manifest_dir, image_file)
+                  if not os.path.isfile(image_path):
+                      failures.append(f'{app_id}: screenshot not found: {image_file}')
+                      continue
+                  r2_key = f"apps/{app_id}/v{version}/{image_file}"
+                  content_type = mime_types[os.path.splitext(image_file)[1].lower()]
+                  subprocess.run([
+                      'aws', 's3', 'cp', image_path, f"s3://{r2_bucket}/{r2_key}",
+                      '--endpoint-url', r2_endpoint,
+                      '--content-type', content_type
+                  ], check=True)
+                  print(f"Uploaded screenshot: {r2_url}/{r2_key}")
 
               # Clean build artifacts and stale sdkconfig to ensure fresh build
               build_dir = os.path.join(source_dir, 'build')
@@ -379,7 +384,11 @@ jobs:
               app_id = manifest['id']
               version = manifest['version']
               targets = manifest.get('targets', [])
-              preview_file = manifest.get('preview', '')
+              screenshots = [{
+                  'url': f"{r2_url}/apps/{app_id}/v{version}/{item['path']}",
+                  'alt': item['alt'],
+                  **({'caption': item['caption']} if item.get('caption') else {})
+              } for item in manifest.get('screenshots', [])]
 
               downloads = {}
               available_targets = []
@@ -405,7 +414,8 @@ jobs:
                   'downloads': downloads,
                   'license': manifest.get('license', ''),
                   'changelog': manifest.get('changelog', ''),
-                  'preview': f"{r2_url}/apps/{app_id}/{preview_file}" if preview_file else '',
+                  'screenshots': screenshots,
+                  'preview': screenshots[0]['url'] if screenshots else '',
                   'reviewed': manifest.get('reviewed', False)
               }
               catalog['apps'].append(entry)

@@ -11,7 +11,12 @@
   "source_repo": "https://github.com/yourname/your-app",
   "source_branch": "main",
   "source_subdir": ".",
-  "preview": "screenshot.png",
+  "screenshots": [
+    {
+      "path": "screenshots/main.webp",
+      "alt": "Describe what is visible in the screenshot"
+    }
+  ],
   "changelog": "v1.0.0: Initial release",
   "reviewed": false
 }

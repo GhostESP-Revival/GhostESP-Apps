@@ -24,7 +24,7 @@ Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`:
 | `source_repo` | Yes | GitHub URL to your app source repo |
 | `source_branch` | Yes | Branch to build from (e.g., `main`) |
 | `source_subdir` | Yes | Subdirectory within the repo containing the app (e.g., `.` or `plugins/examples/my_app`) |
-| `preview` | No | Screenshot filename in the app directory (e.g., `screenshot.png`) |
+| `screenshots` | No | Ordered screenshot objects containing `path`, `alt`, and optional `caption` |
 | `changelog` | No | Version changelog |
 
 ## Source Repo Requirements
@@ -35,6 +35,22 @@ Your source repo must:
 3. Be a public GitHub repository
 
 If your app is part of a larger repo, use `source_subdir` to point to the app directory.
+
+## Screenshots
+
+Store up to eight marketplace screenshots under `apps/<your_app_id>/screenshots/` in this repository. PNG, JPEG, and WebP are supported. Paths are relative to the marketplace manifest, and every image requires useful alternative text:
+
+```json
+"screenshots": [
+  {
+    "path": "screenshots/main.webp",
+    "alt": "Pong running in a portrait court with the player paddle at the bottom",
+    "caption": "Portrait gameplay"
+  }
+]
+```
+
+The first screenshot is also emitted as the legacy `preview` catalog field. Published screenshot URLs are versioned with the app release.
 
 ## Example: Standalone app
 

@@ -3,7 +3,7 @@ name: Validate Manifests
 on:
   pull_request:
     paths:
-      - 'apps/**/manifest.json'
+      - 'apps/**'
 
 jobs:
   validate:
@@ -55,6 +55,37 @@ jobs:
                   source_repo = manifest.get('source_repo', '')
                   if not re.match(r'https://github\.com/.+/.+', source_repo):
                       errors.append(f"{path}: 'source_repo' must be a valid GitHub URL")
+
+                  screenshots = manifest.get('screenshots', [])
+                  if not isinstance(screenshots, list):
+                      errors.append(f"{path}: 'screenshots' must be an array")
+                  elif len(screenshots) > 8:
+                      errors.append(f"{path}: no more than 8 screenshots are allowed")
+                  else:
+                      seen = set()
+                      app_dir = os.path.realpath(root)
+                      for index, screenshot in enumerate(screenshots):
+                          label = f"{path}: screenshots[{index}]"
+                          if not isinstance(screenshot, dict):
+                              errors.append(f"{label} must be an object")
+                              continue
+                          image_path = screenshot.get('path', '')
+                          alt = screenshot.get('alt', '')
+                          if not isinstance(image_path, str) or not re.fullmatch(r'screenshots/[A-Za-z0-9._/-]+\.(png|jpe?g|webp)', image_path, re.IGNORECASE):
+                              errors.append(f"{label}.path must be a PNG, JPEG, or WebP file under screenshots/")
+                              continue
+                          if '\\' in image_path or any(part in ('', '.', '..') for part in image_path.split('/')):
+                              errors.append(f"{label}.path is not a safe relative path")
+                              continue
+                          normalized = image_path.lower()
+                          if normalized in seen:
+                              errors.append(f"{label}.path is duplicated")
+                          seen.add(normalized)
+                          full_path = os.path.realpath(os.path.join(root, image_path))
+                          if os.path.commonpath([app_dir, full_path]) != app_dir or not os.path.isfile(full_path):
+                              errors.append(f"{label}.path does not exist under the app directory")
+                          if not isinstance(alt, str) or not alt.strip():
+                              errors.append(f"{label}.alt must be non-empty text")
 
           if errors:
               print("Validation failed:")

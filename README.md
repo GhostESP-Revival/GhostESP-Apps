@@ -17,7 +17,8 @@ Quick start:
 1. Fork this repo
 2. Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`
 3. Fill in `source_repo` (your public GitHub repo) and `source_subdir`
-4. Open a Pull Request
+4. Optionally add screenshots under `apps/<your_app_id>/screenshots/`
+5. Open a Pull Request
 
 ## Building from GhostESP firmware
 
@@ -33,3 +34,4 @@ Apps built from the GhostESP firmware tree use:
 ## CDN
 
 Built `.gapp` files are hosted at `https://gesp.fuckyourcdn.com`.
+Screenshots are hosted at `https://gesp.fuckyourcdn.com/apps/<id>/v<version>/screenshots/<filename>`.
