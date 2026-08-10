@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T06:50:13.915319+00:00",
+  "generated_at": "2026-08-10T16:00:20.081964+00:00",
   "apps": [
     {
       "id": "calculator",
@@ -110,6 +110,26 @@
       },
       "license": "GPL-3.0",
       "changelog": "v1.0.6: Fixed initial UI rendering, keyboard return, and message delivery; refresh now updates in place with simpler peer cards.",
+      "preview": "",
+      "reviewed": false
+    },
+    {
+      "id": "pong",
+      "name": "Pong",
+      "version": "1.0.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "Portrait Pong with a responsive CPU opponent and touch, keyboard, encoder, or D-pad controls.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.0.0/pong-1.0.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0.0: Initial release.",
       "preview": "",
       "reviewed": false
     },
