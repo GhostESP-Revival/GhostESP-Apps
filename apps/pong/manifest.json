@@ -1,0 +1,16 @@
+{
+  "id": "pong",
+  "name": "Pong",
+  "version": "1.0.0",
+  "authors": ["GhostESP"],
+  "category": "Games",
+  "description": "Portrait Pong with a responsive CPU opponent and touch, keyboard, encoder, or D-pad controls.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/pong",
+  "changelog": "v1.0.0: Initial release.",
+  "reviewed": false
+}
