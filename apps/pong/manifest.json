@@ -1,7 +1,7 @@
 {
   "id": "pong",
   "name": "Pong",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "authors": ["GhostESP"],
   "category": "Games",
   "description": "Full-screen Pong with a responsive CPU opponent and touch, keyboard, encoder, or D-pad controls.",
@@ -11,6 +11,13 @@
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/pong",
-  "changelog": "v1.1.0: Added native-resolution rendering, smoother frame timing, a detailed full-width court, and reliable Back navigation.",
+  "screenshots": [
+    {
+      "path": "screenshots/main.webp",
+      "alt": "Pong gameplay with score, center line, player and CPU paddles, and a touch Back button",
+      "caption": "Full-screen gameplay"
+    }
+  ],
+  "changelog": "v1.1.1: Fixed the Back-button display deadlock and added the gameplay preview.",
   "reviewed": false
 }
