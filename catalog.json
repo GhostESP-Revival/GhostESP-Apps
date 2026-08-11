@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T07:41:20.373217+00:00",
+  "generated_at": "2026-08-11T08:01:52.533581+00:00",
   "apps": [
     {
       "id": "calculator",
@@ -121,7 +121,7 @@
     {
       "id": "pong",
       "name": "Pong",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "authors": [
         "GhostESP"
       ],
@@ -131,12 +131,18 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.1.0/pong-1.1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.1.1/pong-1.1.1-esp32c5.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.1.0: Added native-resolution rendering, smoother frame timing, a detailed full-width court, and reliable Back navigation.",
-      "screenshots": [],
-      "preview": "",
+      "changelog": "v1.1.1: Fixed the Back-button display deadlock and added the gameplay preview.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/pong/v1.1.1/screenshots/main.webp",
+          "alt": "Pong gameplay with score, center line, player and CPU paddles, and a touch Back button",
+          "caption": "Full-screen gameplay"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/pong/v1.1.1/screenshots/main.webp",
       "reviewed": false
     },
     {
