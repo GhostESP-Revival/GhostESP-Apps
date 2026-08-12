@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T09:16:05.543438+00:00",
+  "generated_at": "2026-08-12T10:15:18.536897+00:00",
   "apps": [
     {
       "id": "calculator",
@@ -122,6 +122,33 @@
       "changelog": "v1.0.6: Fixed initial UI rendering, keyboard return, and message delivery; refresh now updates in place with simpler peer cards.",
       "screenshots": [],
       "preview": "",
+      "reviewed": false
+    },
+    {
+      "id": "lightcycles",
+      "name": "Light Cycles",
+      "version": "1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "A fast top-down light-cycle trail game against a CPU rider with swipe, keyboard, encoder, and D-pad controls.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/lightcycles-1.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0: Initial release with dirty-region rendering, CPU opponent, round results, and multi-input controls.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/screenshots/main.webp",
+          "alt": "Light Cycles round result showing cyan and pink trails with a You Lose message",
+          "caption": "Neon trail gameplay and round results"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/screenshots/main.webp",
       "reviewed": false
     },
     {
