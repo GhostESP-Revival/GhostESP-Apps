@@ -11,6 +11,13 @@
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/qr_generator",
+  "screenshots": [
+    {
+      "path": "screenshots/main.webp",
+      "alt": "QR Generator menu with actions to edit text, show a QR code, reset the URL, or go Back",
+      "caption": "QR Generator actions"
+    }
+  ],
   "changelog": "v1.0.0: Initial release",
   "reviewed": false
 }
