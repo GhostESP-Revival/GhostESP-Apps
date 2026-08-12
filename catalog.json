@@ -1,6 +1,33 @@
 {
-  "generated_at": "2026-08-12T10:15:18.536897+00:00",
+  "generated_at": "2026-08-12T15:19:20.454686+00:00",
   "apps": [
+    {
+      "id": "breakout",
+      "name": "Breakout",
+      "version": "1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "Classic brick-breaking action with escalating levels and touch, keyboard, encoder, or D-pad controls.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/breakout-1.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0: Initial release with adaptive rendering, levels, lives, scoring, and multi-input controls.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/screenshots/main.webp",
+          "alt": "Breakout ready screen with rainbow brick rows, paddle, score, level, and lives",
+          "caption": "Classic rainbow-brick gameplay"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/screenshots/main.webp",
+      "reviewed": false
+    },
     {
       "id": "calculator",
       "name": "Calculator",
@@ -203,6 +230,60 @@
         }
       ],
       "preview": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/screenshots/main.webp",
+      "reviewed": false
+    },
+    {
+      "id": "snake",
+      "name": "Snake",
+      "version": "1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "Classic Snake with adaptive portrait and landscape layouts and responsive swipe controls.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/snake-1.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0: Initial release with adaptive layouts, increasing speed, scoring, and multi-input controls.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/screenshots/main.webp",
+          "alt": "Snake gameplay with green snake, red food, score, and touch Back control",
+          "caption": "Adaptive grid-based Snake gameplay"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/screenshots/main.webp",
+      "reviewed": false
+    },
+    {
+      "id": "tetris",
+      "name": "Tetris",
+      "version": "1.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "Adaptive falling-block puzzle game with hold, ghost piece, seven-bag randomizer, levels, and scoring.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/tetris-1.0-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v1.0: Initial release with adaptive layouts, hold, ghost piece, next queue, scoring, and multi-input controls.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/screenshots/main.webp",
+          "alt": "Tetris gameplay with falling pieces, ghost piece, score, level, lines, hold, and next queue",
+          "caption": "Adaptive Tetris gameplay"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/screenshots/main.webp",
       "reviewed": false
     }
   ]
