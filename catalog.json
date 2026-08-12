@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-11T08:01:52.533581+00:00",
+  "generated_at": "2026-08-12T01:13:04.307451+00:00",
   "apps": [
     {
       "id": "calculator",
       "name": "Calculator",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "authors": [
         "GhostESP"
       ],
@@ -15,13 +15,19 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.0/calculator-1.1.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.0/calculator-1.1.0-esp32c5.gapp"
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/calculator-1.1.1-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/calculator-1.1.1-esp32c5.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.1.0: Development-deki release.",
-      "screenshots": [],
-      "preview": "",
+      "changelog": "v1.1.1: Fixed touch, swipe, hardware, and keyboard Back navigation and added an app preview.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/screenshots/main.webp",
+          "alt": "Calculator showing its numeric display, five-row keypad, orange operators, and touch Back button",
+          "caption": "Touch-friendly calculator keypad"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/screenshots/main.webp",
       "reviewed": true
     },
     {
@@ -162,8 +168,14 @@
       },
       "license": "GPL-3.0",
       "changelog": "v1.0.0: Initial release",
-      "screenshots": [],
-      "preview": "",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/screenshots/main.webp",
+          "alt": "QR Generator menu with actions to edit text, show a QR code, reset the URL, or go Back",
+          "caption": "QR Generator actions"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/screenshots/main.webp",
       "reviewed": false
     }
   ]
