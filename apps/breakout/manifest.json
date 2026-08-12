@@ -1,0 +1,17 @@
+{
+  "id": "breakout",
+  "name": "Breakout",
+  "version": "1.0",
+  "authors": ["GhostESP"],
+  "category": "Games",
+  "description": "Classic brick-breaking action with escalating levels and touch, keyboard, encoder, or D-pad controls.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/breakout",
+  "screenshots": [{"path": "screenshots/main.webp", "alt": "Breakout ready screen with rainbow brick rows, paddle, score, level, and lives", "caption": "Classic rainbow-brick gameplay"}],
+  "changelog": "v1.0: Initial release with adaptive rendering, levels, lives, scoring, and multi-input controls.",
+  "reviewed": false
+}

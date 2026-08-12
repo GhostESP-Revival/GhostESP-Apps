@@ -1,0 +1,17 @@
+{
+  "id": "tetris",
+  "name": "Tetris",
+  "version": "1.0",
+  "authors": ["GhostESP"],
+  "category": "Games",
+  "description": "Adaptive falling-block puzzle game with hold, ghost piece, seven-bag randomizer, levels, and scoring.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/tetris",
+  "screenshots": [{"path": "screenshots/main.webp", "alt": "Tetris gameplay with falling pieces, ghost piece, score, level, lines, hold, and next queue", "caption": "Adaptive Tetris gameplay"}],
+  "changelog": "v1.0: Initial release with adaptive layouts, hold, ghost piece, next queue, scoring, and multi-input controls.",
+  "reviewed": false
+}

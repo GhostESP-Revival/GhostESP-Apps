@@ -1,0 +1,17 @@
+{
+  "id": "snake",
+  "name": "Snake",
+  "version": "1.0",
+  "authors": ["GhostESP"],
+  "category": "Games",
+  "description": "Classic Snake with adaptive portrait and landscape layouts and responsive swipe controls.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
+  "source_branch": "Development-deki",
+  "source_subdir": "plugins/examples/snake",
+  "screenshots": [{"path": "screenshots/main.webp", "alt": "Snake gameplay with green snake, red food, score, and touch Back control", "caption": "Adaptive grid-based Snake gameplay"}],
+  "changelog": "v1.0: Initial release with adaptive layouts, increasing speed, scoring, and multi-input controls.",
+  "reviewed": false
+}
