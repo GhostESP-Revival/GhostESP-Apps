@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-12T15:19:20.454686+00:00",
+  "generated_at": "2026-08-13T14:47:03.621347+00:00",
   "apps": [
     {
       "id": "breakout",
@@ -262,7 +262,7 @@
     {
       "id": "tetris",
       "name": "Tetris",
-      "version": "1.0",
+      "version": "1.1",
       "authors": [
         "GhostESP"
       ],
@@ -272,18 +272,18 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/tetris-1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/tetris-1.1-esp32c5.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v1.0: Initial release with adaptive layouts, hold, ghost piece, next queue, scoring, and multi-input controls.",
+      "changelog": "v1.0: Initial release with adaptive layouts, hold, ghost piece, next queue, scoring, and multi-input controls.\nv1.1: Responsiveness fixes - polled held-button DAS movement and on-demand rendering.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/screenshots/main.webp",
           "alt": "Tetris gameplay with falling pieces, ghost piece, score, level, lines, hold, and next queue",
           "caption": "Adaptive Tetris gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/tetris/v1.0/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/screenshots/main.webp",
       "reviewed": false
     }
   ]
