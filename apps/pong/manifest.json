@@ -1,7 +1,7 @@
 {
   "id": "pong",
   "name": "Pong",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "authors": ["GhostESP"],
   "category": "Games",
   "description": "Full-screen Pong with a responsive CPU opponent and touch, keyboard, encoder, or D-pad controls.",
