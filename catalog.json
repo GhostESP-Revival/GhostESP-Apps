@@ -1,37 +1,39 @@
 {
-  "generated_at": "2026-08-13T14:47:03.621347+00:00",
+  "generated_at": "2026-08-17T06:43:27.602267+00:00",
   "apps": [
     {
       "id": "breakout",
       "name": "Breakout",
-      "version": "1.0",
+      "version": "1.0.1",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "Classic brick-breaking action with escalating levels and touch, keyboard, encoder, or D-pad controls.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/breakout-1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0.1/breakout-1.0.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0.1/breakout-1.0.1-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0: Initial release with adaptive rendering, levels, lives, scoring, and multi-input controls.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0.1/screenshots/main.webp",
           "alt": "Breakout ready screen with rainbow brick rows, paddle, score, level, and lives",
           "caption": "Classic rainbow-brick gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/breakout/v1.0.1/screenshots/main.webp",
       "reviewed": false
     },
     {
       "id": "calculator",
       "name": "Calculator",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "authors": [
         "GhostESP"
       ],
@@ -42,25 +44,25 @@
         "esp32c5"
       ],
       "downloads": {
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/calculator-1.1.1-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/calculator-1.1.1-esp32c5.gapp"
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.2/calculator-1.1.2-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.2/calculator-1.1.2-esp32c5.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.1.1: Fixed touch, swipe, hardware, and keyboard Back navigation and added an app preview.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.2/screenshots/main.webp",
           "alt": "Calculator showing its numeric display, five-row keypad, orange operators, and touch Back button",
           "caption": "Touch-friendly calculator keypad"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.1/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/calculator/v1.1.2/screenshots/main.webp",
       "reviewed": true
     },
     {
       "id": "device_inspector",
       "name": "Device Inspector",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "authors": [
         "GhostESP"
       ],
@@ -68,11 +70,13 @@
       "description": "Comprehensive hardware and API test suite with responsive native UI. Tests WiFi, BLE, GPS, RGB, storage, canvas drawing, input events, and theme inspection.",
       "targets": [
         "esp32c5",
+        "esp32s3",
         "esp32c6"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.0/device_inspector-1.1.0-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.0/device_inspector-1.1.0-esp32c6.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.1/device_inspector-1.1.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.1/device_inspector-1.1.1-esp32s3.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/device_inspector/v1.1.1/device_inspector-1.1.1-esp32c6.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.1.0: Development-deki release.",
@@ -83,17 +87,19 @@
     {
       "id": "doom_port",
       "name": "Doom Port",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "DoomGeneric with a responsive RGB565 renderer, joystick controls, and bundled Freedoom game data.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.2/doom_port-0.1.2-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.3/doom_port-0.1.3-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.3/doom_port-0.1.3-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v0.1.2: Corrected gallery icon rendering while retaining the bundled Freedoom release.",
@@ -104,7 +110,7 @@
     {
       "id": "esp32_finder",
       "name": "ESP32 Finder",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "authors": [
         "GhostESP"
       ],
@@ -118,11 +124,11 @@
         "esp32c6"
       ],
       "downloads": {
-        "esp32": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32.gapp",
-        "esp32s2": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32s2.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32s3.gapp",
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32c5.gapp",
-        "esp32c6": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.0/esp32_finder-1.1.0-esp32c6.gapp"
+        "esp32": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.1/esp32_finder-1.1.1-esp32.gapp",
+        "esp32s2": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.1/esp32_finder-1.1.1-esp32s2.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.1/esp32_finder-1.1.1-esp32s3.gapp",
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.1/esp32_finder-1.1.1-esp32c5.gapp",
+        "esp32c6": "https://gesp.fuckyourcdn.com/apps/esp32_finder/v1.1.1/esp32_finder-1.1.1-esp32c6.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.1.0: Build from Development-deki",
@@ -133,17 +139,19 @@
     {
       "id": "hackchat",
       "name": "HackChat",
-      "version": "1.0.6",
+      "version": "1.0.7",
       "authors": [
         "GhostESP"
       ],
       "category": "Tools",
       "description": "Send short nearby messages directly to other GhostESP devices over ESP-NOW.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/hackchat/v1.0.6/hackchat-1.0.6-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/hackchat/v1.0.7/hackchat-1.0.7-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/hackchat/v1.0.7/hackchat-1.0.7-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0.6: Fixed initial UI rendering, keyboard return, and message delivery; refresh now updates in place with simpler peer cards.",
@@ -154,136 +162,146 @@
     {
       "id": "lightcycles",
       "name": "Light Cycles",
-      "version": "1.0",
+      "version": "1.0.1",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "A fast top-down light-cycle trail game against a CPU rider with swipe, keyboard, encoder, and D-pad controls.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/lightcycles-1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0.1/lightcycles-1.0.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0.1/lightcycles-1.0.1-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0: Initial release with dirty-region rendering, CPU opponent, round results, and multi-input controls.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0.1/screenshots/main.webp",
           "alt": "Light Cycles round result showing cyan and pink trails with a You Lose message",
           "caption": "Neon trail gameplay and round results"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/lightcycles/v1.0.1/screenshots/main.webp",
       "reviewed": false
     },
     {
       "id": "pong",
       "name": "Pong",
-      "version": "1.2",
+      "version": "1.2.1",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "Full-screen Pong with a responsive CPU opponent and touch, keyboard, encoder, or D-pad controls.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.2/pong-1.2-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.1/pong-1.2.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.1/pong-1.2.1-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.2: Added dirty-region rendering for substantially smoother gameplay.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/pong/v1.2/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.1/screenshots/main.webp",
           "alt": "Pong gameplay with score, center line, player and CPU paddles, and a touch Back button",
           "caption": "Full-screen gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/pong/v1.2/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.1/screenshots/main.webp",
       "reviewed": false
     },
     {
       "id": "qr_generator",
       "name": "QR Generator",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "authors": [
         "GhostESP"
       ],
       "category": "Tools",
       "description": "Create scannable QR codes from text and URLs with touch, keyboard, encoder, or D-pad input.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/qr_generator-1.0.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.1/qr_generator-1.0.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.1/qr_generator-1.0.1-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0.0: Initial release",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.1/screenshots/main.webp",
           "alt": "QR Generator menu with actions to edit text, show a QR code, reset the URL, or go Back",
           "caption": "QR Generator actions"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.0/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.1/screenshots/main.webp",
       "reviewed": false
     },
     {
       "id": "snake",
       "name": "Snake",
-      "version": "1.0",
+      "version": "1.0.1",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "Classic Snake with adaptive portrait and landscape layouts and responsive swipe controls.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/snake-1.0-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/snake/v1.0.1/snake-1.0.1-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/snake/v1.0.1/snake-1.0.1-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0: Initial release with adaptive layouts, increasing speed, scoring, and multi-input controls.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/snake/v1.0.1/screenshots/main.webp",
           "alt": "Snake gameplay with green snake, red food, score, and touch Back control",
           "caption": "Adaptive grid-based Snake gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/snake/v1.0/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/snake/v1.0.1/screenshots/main.webp",
       "reviewed": false
     },
     {
       "id": "tetris",
       "name": "Tetris",
-      "version": "1.1",
+      "version": "1.2",
       "authors": [
         "GhostESP"
       ],
       "category": "Games",
       "description": "Adaptive falling-block puzzle game with hold, ghost piece, seven-bag randomizer, levels, and scoring.",
       "targets": [
-        "esp32c5"
+        "esp32c5",
+        "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/tetris-1.1-esp32c5.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/tetris/v1.2/tetris-1.2-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/tetris/v1.2/tetris-1.2-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.0: Initial release with adaptive layouts, hold, ghost piece, next queue, scoring, and multi-input controls.\nv1.1: Responsiveness fixes - polled held-button DAS movement and on-demand rendering.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/tetris/v1.2/screenshots/main.webp",
           "alt": "Tetris gameplay with falling pieces, ghost piece, score, level, lines, hold, and next queue",
           "caption": "Adaptive Tetris gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/tetris/v1.1/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/tetris/v1.2/screenshots/main.webp",
       "reviewed": false
     }
   ]
