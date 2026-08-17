@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T08:50:00.349951+00:00",
+  "generated_at": "2026-08-17T09:33:12.825281+00:00",
   "apps": [
     {
       "id": "breakout",
@@ -191,7 +191,7 @@
     {
       "id": "pong",
       "name": "Pong",
-      "version": "1.2.3",
+      "version": "1.2.4",
       "authors": [
         "GhostESP"
       ],
@@ -202,19 +202,19 @@
         "esp32s3"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.3/pong-1.2.3-esp32c5.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.3/pong-1.2.3-esp32s3.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.4/pong-1.2.4-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.4/pong-1.2.4-esp32s3.gapp"
       },
       "license": "GPL-3.0",
       "changelog": "v1.2: Added dirty-region rendering for substantially smoother gameplay.",
       "screenshots": [
         {
-          "url": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.3/screenshots/main.webp",
+          "url": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.4/screenshots/main.webp",
           "alt": "Pong gameplay with score, center line, player and CPU paddles, and a touch Back button",
           "caption": "Full-screen gameplay"
         }
       ],
-      "preview": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.3/screenshots/main.webp",
+      "preview": "https://gesp.fuckyourcdn.com/apps/pong/v1.2.4/screenshots/main.webp",
       "reviewed": false
     },
     {
