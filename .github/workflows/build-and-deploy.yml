@@ -125,7 +125,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install ghostbt
-        run: pip install ghostbt
+        run: pip install ghostbt==0.5.7
 
       - name: Cache ESP-IDF
         uses: actions/cache@v4
@@ -139,6 +139,8 @@ jobs:
         run: |
           gbt setup
           ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6
+          source ~/.ghostbt/esp-idf/export.sh >/dev/null
+          echo "ESP_ROM_ELF_DIR=$ESP_ROM_ELF_DIR" >> "$GITHUB_ENV"
 
       - name: Cache GhostESP firmware
         uses: actions/cache@v4

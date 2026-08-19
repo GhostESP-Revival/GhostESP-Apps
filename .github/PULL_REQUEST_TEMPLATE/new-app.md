@@ -2,17 +2,19 @@
 
 ### Checklist
 
-- [ ] `manifest.json` is valid and has all required fields
-- [ ] `source_repo` points to a public GitHub repository
-- [ ] `commit_sha` is a valid commit hash
-- [ ] Source repo builds with `gbt dist --target <target> --gapp .`
-- [ ] App is licensed under an open source license
-- [ ] ID is unique and doesn't conflict with existing apps
+- [ ] `manifest.json` passes `python scripts/validate_manifests.py apps/<app_id>/manifest.json`
+- [ ] `source_repo` is a public GitHub repository
+- [ ] The source repository contains the app's runtime `manifest.json`
+- [ ] Source `id` and `version` match the catalog manifest
+- [ ] The app builds for every declared target
+- [ ] The app is licensed under an open-source license
+- [ ] The ID is unique and matches the `apps/<app_id>/` directory
+- [ ] I tested the generated `.gapp` on compatible hardware
 
 ### Description
 
-<!-- Brief description of what your app does -->
+<!-- Briefly describe what the app does. -->
 
 ### Testing
 
-<!-- Which targets have you tested this on? -->
+<!-- List the boards and targets you tested. -->

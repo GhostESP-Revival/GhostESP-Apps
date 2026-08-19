@@ -11,14 +11,18 @@ Community-driven catalog for GhostESP apps (`.gapp`).
 
 ## Submitting an App
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Your public repository contains the app source and runtime manifest. This repository receives only a catalog manifest and optional marketplace screenshots.
+
+Start with [Create and Submit a GhostESP App](docs/CREATE_AN_APP.md), then see [CONTRIBUTING.md](CONTRIBUTING.md) for the complete manifest reference.
 
 Quick start:
-1. Fork this repo
-2. Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`
-3. Fill in `source_repo` (your public GitHub repo) and `source_subdir`
-4. Optionally add screenshots under `apps/<your_app_id>/screenshots/`
-5. Open a Pull Request
+1. Build and test the app from your own public GitHub repository
+2. Fork this repository
+3. Copy `templates/app-manifest.json` to `apps/<your_app_id>/manifest.json`
+4. Fill in `source_repo`, `source_branch`, and `source_subdir`
+5. Run `python scripts/validate_manifests.py apps/<your_app_id>/manifest.json`
+6. Optionally add screenshots under `apps/<your_app_id>/screenshots/`
+7. Open a Pull Request
 
 ## Building from GhostESP firmware
 
@@ -26,7 +30,7 @@ Apps built from the GhostESP firmware tree use:
 ```json
 {
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
-  "source_branch": "two-point-zero",
+  "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/your_app"
 }
 ```

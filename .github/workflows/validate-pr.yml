@@ -1,97 +1,101 @@
-name: Validate Manifests
+name: Validate App Submissions
 
 on:
   pull_request:
     paths:
       - 'apps/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'schemas/**'
+      - 'templates/**'
+      - 'CONTRIBUTING.md'
+      - '.github/workflows/validate-pr.yml'
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    outputs:
+      build_matrix: ${{ steps.changed.outputs.build_matrix }}
+      has_builds: ${{ steps.changed.outputs.has_builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run validator tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate manifests
+        run: python scripts/validate_manifests.py
+
+      - name: Select changed app targets
+        id: changed
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          changed = subprocess.run(
+              ["git", "diff", "--name-only", os.environ["BASE_SHA"], os.environ["HEAD_SHA"], "--", "apps"],
+              check=True,
+              capture_output=True,
+              text=True,
+          ).stdout.splitlines()
+          app_ids = sorted({path.split("/")[1] for path in changed if path.startswith("apps/") and len(path.split("/")) >= 2})
+          builds = []
+          for app_id in app_ids:
+              manifest_path = Path("apps") / app_id / "manifest.json"
+              if not manifest_path.is_file():
+                  continue
+              manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+              builds.extend({"app_id": app_id, "target": target} for target in manifest["targets"])
+
+          output = Path(os.environ["GITHUB_OUTPUT"])
+          with output.open("a", encoding="utf-8") as handle:
+              handle.write(f"build_matrix={json.dumps({'include': builds}, separators=(',', ':'))}\n")
+              handle.write(f"has_builds={str(bool(builds)).lower()}\n")
+        shell: python
+
+  build:
+    needs: validate
+    if: needs.validate.outputs.has_builds == 'true'
+    name: Build ${{ matrix.app_id }} (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.validate.outputs.build_matrix) }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate changed manifests
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ghostbt
+        run: pip install ghostbt==0.5.7
+
+      - name: Cache ESP-IDF
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ghostbt/esp-idf
+            ~/.espressif
+          key: esp-idf-v6.0.1-${{ matrix.target }}
+          restore-keys: |
+            esp-idf-v6.0.1-
+
+      - name: Install ESP-IDF target
         run: |
-          import json
-          import sys
-          import os
-          import re
+          gbt setup --target ${{ matrix.target }}
+          source ~/.ghostbt/esp-idf/export.sh >/dev/null
+          echo "ESP_ROM_ELF_DIR=$ESP_ROM_ELF_DIR" >> "$GITHUB_ENV"
 
-          required_fields = ['id', 'name', 'version', 'authors', 'category', 'description', 'type', 'targets', 'license', 'source_repo', 'source_branch', 'source_subdir']
-
-          valid_categories = ['System', 'Tools', 'Games', 'Bluetooth', 'GPIO', 'Infrared', 'Media', 'NFC', 'RFID', 'Sub-GHz', 'USB']
-          valid_targets = ['esp32', 'esp32s2', 'esp32s3', 'esp32c5', 'esp32c6']
-
-          errors = []
-
-          for root, dirs, files in os.walk('apps'):
-              if 'manifest.json' in files and root != 'apps':
-                  path = os.path.join(root, 'manifest.json')
-                  try:
-                      with open(path) as f:
-                          manifest = json.load(f)
-                  except json.JSONDecodeError as e:
-                      errors.append(f"{path}: Invalid JSON - {e}")
-                      continue
-
-                  for field in required_fields:
-                      if field not in manifest:
-                          errors.append(f"{path}: Missing required field '{field}'")
-
-                  if manifest.get('type') != 'app':
-                      errors.append(f"{path}: 'type' must be 'app'")
-
-                  for target in manifest.get('targets', []):
-                      if target not in valid_targets:
-                          errors.append(f"{path}: Invalid target '{target}'")
-
-                  if manifest.get('category', '') not in valid_categories:
-                      errors.append(f"{path}: Invalid category '{manifest.get('category', '')}'")
-
-                  if not isinstance(manifest.get('authors', []), list):
-                      errors.append(f"{path}: 'authors' must be an array")
-
-                  source_repo = manifest.get('source_repo', '')
-                  if not re.match(r'https://github\.com/.+/.+', source_repo):
-                      errors.append(f"{path}: 'source_repo' must be a valid GitHub URL")
-
-                  screenshots = manifest.get('screenshots', [])
-                  if not isinstance(screenshots, list):
-                      errors.append(f"{path}: 'screenshots' must be an array")
-                  elif len(screenshots) > 8:
-                      errors.append(f"{path}: no more than 8 screenshots are allowed")
-                  else:
-                      seen = set()
-                      app_dir = os.path.realpath(root)
-                      for index, screenshot in enumerate(screenshots):
-                          label = f"{path}: screenshots[{index}]"
-                          if not isinstance(screenshot, dict):
-                              errors.append(f"{label} must be an object")
-                              continue
-                          image_path = screenshot.get('path', '')
-                          alt = screenshot.get('alt', '')
-                          if not isinstance(image_path, str) or not re.fullmatch(r'screenshots/[A-Za-z0-9._/-]+\.(png|jpe?g|webp)', image_path, re.IGNORECASE):
-                              errors.append(f"{label}.path must be a PNG, JPEG, or WebP file under screenshots/")
-                              continue
-                          if '\\' in image_path or any(part in ('', '.', '..') for part in image_path.split('/')):
-                              errors.append(f"{label}.path is not a safe relative path")
-                              continue
-                          normalized = image_path.lower()
-                          if normalized in seen:
-                              errors.append(f"{label}.path is duplicated")
-                          seen.add(normalized)
-                          full_path = os.path.realpath(os.path.join(root, image_path))
-                          if os.path.commonpath([app_dir, full_path]) != app_dir or not os.path.isfile(full_path):
-                              errors.append(f"{label}.path does not exist under the app directory")
-                          if not isinstance(alt, str) or not alt.strip():
-                              errors.append(f"{label}.alt must be non-empty text")
-
-          if errors:
-              print("Validation failed:")
-              for error in errors:
-                  print(f"  - {error}")
-              sys.exit(1)
-          else:
-              print("All manifests are valid.")
-        shell: python
+      - name: Dry-run submission build
+        run: python scripts/build_submission.py apps/${{ matrix.app_id }}/manifest.json --target ${{ matrix.target }}
