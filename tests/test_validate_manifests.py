@@ -53,6 +53,19 @@ class ValidateManifestTests(unittest.TestCase):
         self.assertTrue(any("invalid target" in error for error in errors))
         self.assertTrue(any("duplicates" in error for error in errors))
 
+    def test_p4_target_manifest_mapping_is_valid(self):
+        self.manifest["targets"] = ["esp32s3", "esp32p4"]
+        self.manifest["target_manifests"] = {"esp32p4": "manifest.p4.json"}
+        self.write_manifest()
+        self.assertEqual(validate_manifest(self.path), [])
+
+    def test_target_manifest_mapping_must_use_declared_target_and_safe_path(self):
+        self.manifest["target_manifests"] = {"esp32p4": "../manifest.p4.json"}
+        self.write_manifest()
+        errors = validate_manifest(self.path)
+        self.assertTrue(any("not declared in 'targets'" in error for error in errors))
+        self.assertTrue(any("safe relative manifest filename" in error for error in errors))
+
     def test_source_subdir_cannot_escape_repository(self):
         self.manifest["source_subdir"] = "../private"
         self.write_manifest()

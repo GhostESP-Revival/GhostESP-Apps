@@ -35,6 +35,11 @@ Apps built from the GhostESP firmware tree use:
 }
 ```
 
+When an app needs a different runtime manifest for one architecture, add a
+`target_manifests` mapping in the catalog manifest, for example
+`{"esp32p4": "manifest.p4.json"}`. CI stages that manifest only while building
+that target, so the normal manifest and other target packages are unchanged.
+
 ## CDN
 
 Built `.gapp` files are hosted at `https://gesp.fuckyourcdn.com`.

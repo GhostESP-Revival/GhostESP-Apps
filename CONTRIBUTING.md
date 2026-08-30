@@ -29,11 +29,12 @@ Alternatively, copy `templates/app-manifest.json` to `apps/<your_app_id>/manifes
 | `category` | Yes | One of: System, Tools, Games, Bluetooth, GPIO, Infrared, Media, NFC, RFID, Sub-GHz, USB |
 | `description` | Yes | Short description of what the app does |
 | `type` | Yes | Must be `"app"` |
-| `targets` | Yes | Array of targets: `esp32`, `esp32s2`, `esp32s3`, `esp32c5`, `esp32c6` |
+| `targets` | Yes | Array of targets: `esp32`, `esp32s2`, `esp32s3`, `esp32c5`, `esp32c6`, `esp32p4` |
 | `license` | Yes | SPDX license identifier |
 | `source_repo` | Yes | GitHub URL to your app source repo |
 | `source_branch` | Yes | Branch to build from (e.g., `main`) |
 | `source_subdir` | Yes | Subdirectory within the repo containing the app (e.g., `.` or `plugins/examples/my_app`) |
+| `target_manifests` | No | Object mapping a target to an alternate runtime manifest filename, such as `{"esp32p4": "manifest.p4.json"}` |
 | `screenshots` | No | Ordered screenshot objects containing `path`, `alt`, and optional `caption` |
 | `changelog` | No | Version changelog |
 
@@ -45,7 +46,7 @@ Your source repo must:
 3. Be a public GitHub repository that CI can clone without credentials
 4. Use the same `id` and `version` in its runtime manifest as the catalog manifest
 
-If your app is part of a larger repo, use `source_subdir` to point to the app directory. Pull-request CI clones the repository and builds every target listed in `targets`.
+If your app is part of a larger repo, use `source_subdir` to point to the app directory. Pull-request CI clones the repository and builds every target listed in `targets`. If a target needs a different runtime manifest, optionally map it with `target_manifests`, such as `{ "esp32p4": "manifest.p4.json" }`; CI stages that file as `manifest.json` only for the matching target build.
 
 ## Screenshots
 

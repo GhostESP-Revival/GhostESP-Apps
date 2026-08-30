@@ -3,11 +3,21 @@ import json
 import subprocess
 import sys
 import tempfile
+import shutil
 from pathlib import Path, PurePosixPath
 
 
 def load_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def target_manifest_name(catalog, target):
+    mappings = catalog.get("target_manifests", {})
+    name = mappings.get(target, "manifest.json") if isinstance(mappings, dict) else "manifest.json"
+    path = PurePosixPath(name)
+    if path.is_absolute() or any(part in {"", ".", ".."} for part in path.parts):
+        raise ValueError(f"invalid target manifest path for {target}: {name!r}")
+    return name
 
 
 def build_submission(manifest_path, target, output_dir=None):
@@ -37,9 +47,10 @@ def build_submission(manifest_path, target, output_dir=None):
         if not source_dir.is_dir():
             raise FileNotFoundError(f"source_subdir does not exist: {catalog['source_subdir']}")
 
-        source_manifest_path = source_dir / "manifest.json"
+        selected_manifest_name = target_manifest_name(catalog, target)
+        source_manifest_path = source_dir / PurePosixPath(selected_manifest_name)
         if not source_manifest_path.is_file():
-            raise FileNotFoundError(f"source app has no manifest.json in {catalog['source_subdir']}")
+            raise FileNotFoundError(f"source app has no {selected_manifest_name} in {catalog['source_subdir']}")
         source = load_json(source_manifest_path)
         for field in ("id", "version"):
             if source.get(field) != catalog[field]:
@@ -52,19 +63,30 @@ def build_submission(manifest_path, target, output_dir=None):
         expected_name = f"{app_id}-{version}-{target}.gapp"
         if list(destination.rglob(expected_name)):
             raise FileExistsError(f"output already contains {expected_name}; choose an empty output directory")
-        subprocess.run(
-            [
-                "gbt",
-                "dist",
-                str(source_dir),
-                "--target",
-                target,
-                "--gapp",
-                "--out",
-                str(destination),
-            ],
-            check=True,
-        )
+        default_manifest_path = source_dir / "manifest.json"
+        original_manifest = default_manifest_path.read_bytes() if default_manifest_path.is_file() else None
+        if selected_manifest_name != "manifest.json":
+            shutil.copyfile(source_manifest_path, default_manifest_path)
+        try:
+            subprocess.run(
+                [
+                    "gbt",
+                    "dist",
+                    str(source_dir),
+                    "--target",
+                    target,
+                    "--gapp",
+                    "--out",
+                    str(destination),
+                ],
+                check=True,
+            )
+        finally:
+            if selected_manifest_name != "manifest.json":
+                if original_manifest is None:
+                    default_manifest_path.unlink(missing_ok=True)
+                else:
+                    default_manifest_path.write_bytes(original_manifest)
         packages = list(destination.rglob(expected_name))
         if not packages:
             raise FileNotFoundError(f"build did not produce expected package: {expected_name}")

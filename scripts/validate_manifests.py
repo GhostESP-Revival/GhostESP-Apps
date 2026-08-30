@@ -31,7 +31,7 @@ VALID_CATEGORIES = {
     "Sub-GHz",
     "USB",
 }
-VALID_TARGETS = {"esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"}
+VALID_TARGETS = {"esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6", "esp32p4"}
 ID_PATTERN = re.compile(r"[a-z][a-z0-9_]*")
 VERSION_PATTERN = re.compile(r"\d+\.\d+(?:\.\d+)?(?:-[0-9A-Za-z.-]+)?")
 LICENSE_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]*")
@@ -103,6 +103,16 @@ def validate_manifest(path):
             errors.append(f"{path}: invalid target '{target}'")
         if len(targets) != len(set(targets)):
             errors.append(f"{path}: 'targets' must not contain duplicates")
+
+    target_manifests = manifest.get("target_manifests", {})
+    if not isinstance(target_manifests, dict):
+        errors.append(f"{path}: 'target_manifests' must be an object when provided")
+    else:
+        for target, manifest_name in target_manifests.items():
+            if target not in (targets if isinstance(targets, list) else []):
+                errors.append(f"{path}: target_manifests key '{target}' is not declared in 'targets'")
+            if not _safe_relative_path(manifest_name):
+                errors.append(f"{path}: target_manifests['{target}'] must be a safe relative manifest filename")
 
     license_id = manifest.get("license")
     if isinstance(license_id, str) and license_id and not LICENSE_PATTERN.fullmatch(license_id):

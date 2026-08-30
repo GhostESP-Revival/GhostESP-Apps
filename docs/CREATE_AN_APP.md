@@ -59,6 +59,7 @@ Test the generated package on compatible hardware before submitting it. Repeat t
 ```powershell
 gbt dist . --target esp32c5 --gapp
 gbt dist . --target esp32s3 --gapp
+gbt dist . --target esp32p4 --gapp
 ```
 
 ## 4. Publish the source repository
@@ -90,6 +91,19 @@ Confirm these fields:
 - `source_subdir`: `.` when the app is at the repository root, or its repository-relative directory.
 - `targets`: every target that successfully produced and ran a `.gapp`.
 - `license`: the SPDX identifier used by the source repository.
+
+If one target needs a different runtime manifest, keep the normal `manifest.json`
+for the other targets and add a `target_manifests` mapping in the catalog
+manifest, for example:
+
+```json
+"target_manifests": {
+  "esp32p4": "manifest.p4.json"
+}
+```
+
+The CI build stages the mapped file as `manifest.json` only for that target and
+restores the source tree before building the next target.
 
 The catalog `id` and `version` must exactly match the runtime manifest in the source repository. Contributors leave `reviewed` set to `false`; maintainers control review status.
 

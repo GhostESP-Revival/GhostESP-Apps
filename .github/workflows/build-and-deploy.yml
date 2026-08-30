@@ -138,7 +138,7 @@ jobs:
       - name: Install ESP-IDF
         run: |
           gbt setup
-          ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6
+          ~/.ghostbt/esp-idf/install.sh esp32 esp32s2 esp32s3 esp32c5 esp32c6 esp32p4
           source ~/.ghostbt/esp-idf/export.sh >/dev/null
           echo "ESP_ROM_ELF_DIR=$ESP_ROM_ELF_DIR" >> "$GITHUB_ENV"
 
@@ -200,6 +200,7 @@ jobs:
               source_repo = manifest.get('source_repo', '')
               source_branch = manifest.get('source_branch', 'main')
               source_subdir = manifest.get('source_subdir', '.')
+              target_manifests = manifest.get('target_manifests', {})
 
               if not source_repo:
                   print(f"Skipping {app_id}: no source_repo")
@@ -285,9 +286,31 @@ jobs:
                   package_dir = os.path.join('build', app_id)
                   if os.path.isdir(package_dir):
                       shutil.rmtree(package_dir)
-                  result = subprocess.run(
-                      ['gbt', 'dist', '--target', target, '--gapp', '--out', package_dir, source_dir]
-                  )
+                  selected_manifest_name = target_manifests.get(target, 'manifest.json') if isinstance(target_manifests, dict) else 'manifest.json'
+                  selected_manifest_path = os.path.join(source_dir, selected_manifest_name)
+                  default_manifest_path = os.path.join(source_dir, 'manifest.json')
+                  original_manifest = None
+                  if selected_manifest_name != 'manifest.json':
+                      if not os.path.isfile(selected_manifest_path):
+                          print(f'Missing target manifest for {app_id}/{target}: {selected_manifest_name}')
+                          failures.append(f'{app_id}/{target}: target manifest not found')
+                          continue
+                      if os.path.isfile(default_manifest_path):
+                          with open(default_manifest_path, 'rb') as default_file:
+                              original_manifest = default_file.read()
+                      shutil.copyfile(selected_manifest_path, default_manifest_path)
+                  try:
+                      result = subprocess.run(
+                          ['gbt', 'dist', '--target', target, '--gapp', '--out', package_dir, source_dir]
+                      )
+                  finally:
+                      if selected_manifest_name != 'manifest.json':
+                          if original_manifest is None:
+                              if os.path.isfile(default_manifest_path):
+                                  os.remove(default_manifest_path)
+                          else:
+                              with open(default_manifest_path, 'wb') as default_file:
+                                  default_file.write(original_manifest)
                   if result.returncode != 0:
                       print(f"Build failed for {app_id}/{target}")
                       failures.append(f'{app_id}/{target}: build failed')

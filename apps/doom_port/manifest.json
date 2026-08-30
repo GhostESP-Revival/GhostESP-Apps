@@ -1,16 +1,19 @@
 {
   "id": "doom_port",
   "name": "Doom Port",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "authors": ["GhostESP"],
   "category": "Games",
   "description": "DoomGeneric with a responsive RGB565 renderer, joystick controls, and bundled Freedoom game data.",
   "type": "app",
-  "targets": ["esp32c5", "esp32s3"],
+  "targets": ["esp32c5", "esp32s3", "esp32p4"],
+  "target_manifests": {
+    "esp32p4": "manifest.p4.json"
+  },
   "license": "GPL-3.0",
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/doom_port",
-  "changelog": "v0.1.2: Corrected gallery icon rendering while retaining the bundled Freedoom release.",
+  "changelog": "v0.1.6: Moves P4 controls into the black margins with borderless direction arrows. Update P4 firmware for optimized canvas scaling and the Home-swipe exit fix. Physical joystick hold and C5/S3 controls are unchanged.",
   "reviewed": false
 }

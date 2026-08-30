@@ -29,7 +29,15 @@
       "type": "array",
       "minItems": 1,
       "uniqueItems": true,
-      "items": {"enum": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6"]}
+      "items": {"enum": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6", "esp32p4"]}
+    },
+    "target_manifests": {
+      "type": "object",
+      "propertyNames": {"enum": ["esp32", "esp32s2", "esp32s3", "esp32c5", "esp32c6", "esp32p4"]},
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-][A-Za-z0-9._-]*(?:/[A-Za-z0-9_-][A-Za-z0-9._-]*)*$"
+      }
     },
     "license": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$"},
     "source_repo": {"type": "string", "pattern": "^https://github\\.com/[^/\\s]+/[^/\\s]+?(?:\\.git)?$"},
