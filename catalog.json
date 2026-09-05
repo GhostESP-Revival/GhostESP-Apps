@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-30T13:29:54.352344+00:00",
+  "generated_at": "2026-09-05T09:41:41.595082+00:00",
   "apps": [
     {
       "id": "breakout",
@@ -87,7 +87,7 @@
     {
       "id": "doom_port",
       "name": "Doom Port",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "authors": [
         "GhostESP"
       ],
@@ -99,12 +99,12 @@
         "esp32p4"
       ],
       "downloads": {
-        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.6/doom_port-0.1.6-esp32c5.gapp",
-        "esp32s3": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.6/doom_port-0.1.6-esp32s3.gapp",
-        "esp32p4": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.6/doom_port-0.1.6-esp32p4.gapp"
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.7/doom_port-0.1.7-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.7/doom_port-0.1.7-esp32s3.gapp",
+        "esp32p4": "https://gesp.fuckyourcdn.com/apps/doom_port/v0.1.7/doom_port-0.1.7-esp32p4.gapp"
       },
       "license": "GPL-3.0",
-      "changelog": "v0.1.6: Moves P4 controls into the black margins with borderless direction arrows. Update P4 firmware for optimized canvas scaling and the Home-swipe exit fix. Physical joystick hold and C5/S3 controls are unchanged.",
+      "changelog": "v0.1.7: Moves large working buffers (screen buffer, spare frame, WAD cache) to the strict PSRAM allocator with runtime checks, requires firmware with the PSRAM allocator API, doubles WAD cache blocks to cut internal-heap DMA thrash, and improves C5 throughput with the fast C5 frame path, width-aware framebuffer stride, faster SD SPI clock, and 70 MHz ParlIO.",
       "screenshots": [],
       "preview": "",
       "reviewed": false
