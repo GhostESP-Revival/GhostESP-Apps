@@ -1,7 +1,7 @@
 {
   "id": "doom_port",
   "name": "Doom Port",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "authors": ["GhostESP"],
   "category": "Games",
   "description": "DoomGeneric with a responsive RGB565 renderer, joystick controls, and bundled Freedoom game data.",
@@ -14,6 +14,6 @@
   "source_repo": "https://github.com/GhostESP-Revival/GhostESP",
   "source_branch": "Development-deki",
   "source_subdir": "plugins/examples/doom_port",
-  "changelog": "v0.1.6: Moves P4 controls into the black margins with borderless direction arrows. Update P4 firmware for optimized canvas scaling and the Home-swipe exit fix. Physical joystick hold and C5/S3 controls are unchanged.",
+  "changelog": "v0.1.7: Moves large working buffers (screen buffer, spare frame, WAD cache) to the strict PSRAM allocator with runtime checks, requires firmware with the PSRAM allocator API, doubles WAD cache blocks to cut internal-heap DMA thrash, and improves C5 throughput with the fast C5 frame path, width-aware framebuffer stride, faster SD SPI clock, and 70 MHz ParlIO.",
   "reviewed": false
 }
