@@ -1,0 +1,16 @@
+{
+  "id": "rd03d_radar",
+  "name": "RD-03D Radar",
+  "version": "0.1.17",
+  "authors": ["Billi-Green"],
+  "category": "Tools",
+  "description": "Connect to one or more RD-03D ESP-NOW radar nodes and view a 70-degree 2D radar display with 10m range.",
+  "type": "app",
+  "targets": ["esp32c5"],
+  "license": "GPL-3.0",
+  "source_repo": "https://github.com/Billi-Green/R-App",
+  "source_branch": "main",
+  "source_subdir": ".",
+  "changelog": "v0.1.17: Continuously scans in Connect, removes stale devices there, and preserves selected streams while viewing Radar.",
+  "reviewed": false
+}
