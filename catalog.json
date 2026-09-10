@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T09:41:41.595082+00:00",
+  "generated_at": "2026-09-10T09:31:01.637889+00:00",
   "apps": [
     {
       "id": "breakout",
@@ -246,6 +246,27 @@
         }
       ],
       "preview": "https://gesp.fuckyourcdn.com/apps/qr_generator/v1.0.1/screenshots/main.webp",
+      "reviewed": false
+    },
+    {
+      "id": "rd03d_radar",
+      "name": "RD-03D Radar",
+      "version": "0.1.17",
+      "authors": [
+        "Billi-Green"
+      ],
+      "category": "Tools",
+      "description": "Connect to one or more RD-03D ESP-NOW radar nodes and view a 70-degree 2D radar display with 10m range.",
+      "targets": [
+        "esp32c5"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/rd03d_radar/v0.1.17/rd03d_radar-0.1.17-esp32c5.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v0.1.17: Continuously scans in Connect, removes stale devices there, and preserves selected streams while viewing Radar.",
+      "screenshots": [],
+      "preview": "",
       "reviewed": false
     },
     {
