@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T09:31:01.637889+00:00",
+  "generated_at": "2026-09-25T09:54:22.138821+00:00",
   "apps": [
     {
       "id": "breakout",
@@ -137,6 +137,37 @@
       "screenshots": [],
       "preview": "",
       "reviewed": true
+    },
+    {
+      "id": "gb_emulator",
+      "name": "GB Emulator",
+      "version": "0.2.0",
+      "authors": [
+        "GhostESP"
+      ],
+      "category": "Games",
+      "description": "Game Boy and Game Boy Color emulator (gnuboy) with responsive scaling, save states and per-device controls.",
+      "targets": [
+        "esp32c5",
+        "esp32s3",
+        "esp32p4"
+      ],
+      "downloads": {
+        "esp32c5": "https://gesp.fuckyourcdn.com/apps/gb_emulator/v0.2.0/gb_emulator-0.2.0-esp32c5.gapp",
+        "esp32s3": "https://gesp.fuckyourcdn.com/apps/gb_emulator/v0.2.0/gb_emulator-0.2.0-esp32s3.gapp",
+        "esp32p4": "https://gesp.fuckyourcdn.com/apps/gb_emulator/v0.2.0/gb_emulator-0.2.0-esp32p4.gapp"
+      },
+      "license": "GPL-3.0",
+      "changelog": "v0.1.0: Initial DMG/CGB emulation via vendored gnuboy, ROM picker, save states and battery saves.\nv0.2.0: Absolute-deadline frame pacing (fixes ~26% fast emulation), PPU render skipping on non-displayed frames, async canvas blit, fixed-point canvas scaler, and native-style pause menu and About page.",
+      "screenshots": [
+        {
+          "url": "https://gesp.fuckyourcdn.com/apps/gb_emulator/v0.2.0/screenshots/main.png",
+          "alt": "Pokemon Crystal running in the GB Emulator on a 240x320 panel, with the on-screen D-pad, A and B buttons, Start and Select, and a pause button",
+          "caption": "Pokemon Crystal on the Game Boy Color emulator"
+        }
+      ],
+      "preview": "https://gesp.fuckyourcdn.com/apps/gb_emulator/v0.2.0/screenshots/main.png",
+      "reviewed": false
     },
     {
       "id": "hackchat",
